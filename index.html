@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Página con video de fondo y poema</title>
+    <link rel="stylesheet" href="diseños.css">
+</head>
+<div id="heart-glow" class="heart-glow"></div>
+<body>
+    <video id="video1" class="bg-video visible" autoplay loop muted>
+        <source src="0813.mp4" type="video/mp4">
+    </video>
+    <video id="video2" class="bg-video hidden" autoplay loop muted>
+        <source src="1129.mp4" type="video/mp4">
+    </video>
+    <video id="video3" class="bg-video hidden" autoplay loop muted>
+        <source src="1298.mp4" type="video/mp4">
+    </video>
+    <video id="video4" class="bg-video hidden" autoplay loop muted>
+        <source src="1010.mp4" type="video/mp4">
+    </video>
+    <video id="video5" class="bg-video hidden" autoplay loop muted>
+        <source src="2020.mp4" type="video/mp4">
+    </video>
+
+    <audio id="bg-music" preload="auto" loop>
+        <source src="Present.mp3" type="audio/mpeg">
+        Tu navegador no soporta el audio.
+        </audio>
+         <button id="play-music">HAZME CLICK</button>
+
+        <div class="overlay"></div>
+        <div class="poem-container">
+            <div id="poem-line" class="poem-line"></div>
+    </div>
+    <script>
+        const lines = [
+            "Le hablo al universo, aunque me duela,",
+            "que mi destino es andar solo,",
+            "porque el deseo de ser querido y amar",
+            "es punzada que a veces hiere en silencio.",
+            "Eso creía, hasta que apareciste,",
+            "y no me dolió mostrar lo que guardaba en penumbras.",
+            "Amor, palabra sencilla y a la vez misterio,",
+            "más que un sonido, un temblor del alma.",
+            "Tú eres el pulso que me enseña a sentir,",
+            "amo todo de ti,",
+            "porque si vivir es resistir,",
+            "te amaré hasta que se apague el último suspiro.",
+            "Temía morir de amor,",
+            "que mis latidos no fueran suficientes,",
+            "tan simple y a la vez tan fuerte,",
+            "y sin embargo, cuando te conocí,",
+            "supe que sólo muriendo por ti,",
+            "podría aprender a amarte de verdad.",
+            "En cada ocaso, en cada flor que se abre,",
+            "te veo, te siento, te nombro sin palabras,",
+            "aunque mil vidas pasen y vuelvan a cruzarse,",
+            "me enamoraría de ti, una y otra vez,",
+            "como el mar se enamora del horizonte infinito.",
+            "Anhelaba una vida con alguien más",
+            "que no fuera mi sombra y mis miedos,",
+            "un futuro que no se llenara solo de oscuridad,",
+            "y entonces, en tus ojos,",
+            "nacieron mis motivos, mis sueños, mis ganas.",
+            "Contigo aprendí a encender un fuego duradero,",
+            "pensé que era llama fugaz,",
+            "pero fue un rastro que dejó huella en mi historia,",
+            "un tiempo corto que se hizo infinito,",
+            "grabado en las entrañas del alma.",
+            "Recuerdo tus palabras, dulce refugio,",
+            "“eres lindo”, y aunque suene simple, nunca lo había oído.",
+            "¿Notaste cuando hablo de más en mi alegría?",
+            "¿O el silencio cuando el alma pesa?",
+            "¿Sabías que cuando me siento seguro,",
+            "me vuelvo niño que ríe y se esconde?",
+            "¿Viste que mis poemas y detalles",
+            "no son promesas vacías, sino trozos de mi ser?",
+            "Y sí, tengo miedo, miedo a no ser suficiente,",
+            "pero aún así, ¿me ves lindo?",
+            "Sé que parezco duro, máscara de piedra,",
+            "pero dentro, un corazón frágil,",
+            "que cada cambio siente como tormenta,",
+            "amenazando con romperse en mil pedazos.",
+            "Tengo miedo al abandono,",
+            "cada gesto extraño lo cargo en mi espalda,",
+            "pero soy humano, me dejo sentir,",
+            "y encuentro calma en el silencio de mi cuarto,",
+            "donde el ruido del vacío es canción.",
+            "En cada verso que escribo, estás tú,",
+            "mi mujer perfecta, mi respuesta sin preguntas.",
+            "Pero a veces amar duele,",
+            "y me aferro a un corazón que también te extraña.",
+            "Hace días dijiste que no estás lista,",
+            "que hay batallas que debes pelear sola,",
+            "y yo, terco, me resisto a soltar,",
+            "pero daría todo por ti,",
+            "aunque sólo fuera un instante,",
+            "una oportunidad que me diste sin pedirla,",
+            "y que guardo con miedo y amor a la vez.",
+            "Me duele la distancia, la ausencia,",
+            "y me pregunto cómo sería la vida",
+            "si pudiera verte al otro lado de la calle,",
+            "si el tiempo pudiera cambiar su curso.",
+            "Si tu corazón se aleja, lo entiendo,",
+            "y mientras encuentres amor y felicidad,",
+            "yo estaré en silencio, celebrando tu sonrisa,",
+            "porque mereces eso y mucho más.",
+            "Tengo una marca, un lastre invisible,",
+            "nunca antes sentí lo que siento por ti,",
+            "una obsesión dulce y peligrosa,",
+            "que aprendí a reconocer y soltar.",
+            "Como dije el primer día,",
+            "te esperaré hoy, mañana, siempre,",
+            "porque antes de caer al abismo,",
+            "quiero besar tus labios aunque sea una vez,",
+            "y contarle a los demonios que fui feliz sin haber tocado el cielo.",
+            "Tú, jardín oculto entre ruinas,",
+            "luz que se cuela por grietas invisibles,",
+            "una brisa que susurra secretos al alma cansada.",
+            "Eres lirio en medio del desierto,",
+            "perfume que se niega a olvidar el viento,",
+            "promesa callada de un verano eterno,",
+            "voz que arrulla la noche y calma las tempestades,",
+            "refugio dulce donde quisiera perderme.",
+            "Perdóname por no poder regalarte el mundo,",
+            "por solo ofrecerte intentos, palabras incompletas,",
+            "flores que no alcancé a sembrar y regalarte",
+            "Pero no es un adiós,",
+            "es un suspiro detenido,",
+            "una pausa que guarda un latido,",
+            "porque en cada rincón del tiempo,",
+            "te sigo buscando, te sigo queriendo.",
+            "Seguiré aquí,",
+            "escribiéndote sin descanso,",
+            "descubriendo cada rincón de tu idioma,",
+            "aprendiendo el mapa de tu alma,",
+            "porque aunque estés lejos,",
+            "mi amor no cesa,",
+            "y aunque yo ya no pertenecezca a tu corazón,",
+            "tú siempre serás parte de mí."
+        ];
+let index = 0;
+let videoState = 1;
+const poemLine = document.getElementById('poem-line');
+const video1 = document.getElementById('video1');
+const video2 = document.getElementById('video2');
+const video3 = document.getElementById('video3');
+const video4 = document.getElementById('video4');
+const video5 = document.getElementById('video5');
+poemLine.textContent = lines[index];
+
+function showNextLine() {
+    poemLine.classList.add('hide');
+    setTimeout(() => {
+        index = index + 1;
+        if (index < lines.length) {
+            poemLine.textContent = lines[index];
+            poemLine.classList.remove('hide');
+
+            if (videoState === 1 && lines[index] === "En cada ocaso, en cada flor que se abre,") {
+                video1.classList.remove('visible');
+                video1.classList.add('hidden');
+                video2.classList.remove('hidden');
+                video2.classList.add('visible');
+                videoState = 2;
+            } else if (videoState === 2 && lines[index] === "Contigo aprendí a encender un fuego duradero,") {
+                video2.classList.remove('visible');
+                video2.classList.add('hidden');
+                video3.classList.remove('hidden');
+                video3.classList.add('visible');
+                videoState = 3;
+            } else if (videoState === 3 && lines[index] === "que cada cambio siente como tormenta,") {
+                video3.classList.remove('visible');
+                video3.classList.add('hidden');
+                video4.classList.remove('hidden');
+                video4.classList.add('visible');
+                videoState = 4;
+            } else if (videoState === 4 && lines[index] === "Eres lirio en medio del desierto,") {
+                video4.classList.remove('visible');
+                video4.classList.add('hidden');
+                video5.classList.remove('hidden');
+                video5.classList.add('visible');
+                videoState = 5;
+            } else if (videoState === 1) {
+                video2.classList.remove('visible');
+                video2.classList.add('hidden');
+                video3.classList.remove('visible');
+                video3.classList.add('hidden');
+                video4.classList.remove('visible');
+                video4.classList.add('hidden');
+                video5.classList.remove('visible');
+                video5.classList.add('hidden');
+                video1.classList.remove('hidden');
+                video1.classList.add('visible');
+            }
+            // Si videoState es 2, 3, 4 o 5, no vuelve a mostrar los anteriores
+        }
+        // Cuando llegue a la última línea, detén el intervalo y muestra el efecto
+        if (index === lines.length - 1) {
+            clearInterval(intervalId);
+            const heartGlow = document.getElementById('heart-glow');
+            heartGlow.style.opacity = '1';
+            heartGlow.style.animation = 'heartbeat 1.5s infinite';
+        }
+    }, 700);
+}
+const intervalId = setInterval(showNextLine, 6500);
+
+        const audio = document.getElementById('bg-music');
+        const playBtn = document.getElementById('play-music');
+        playBtn.addEventListener('click', () => {
+            audio.play();
+            playBtn.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

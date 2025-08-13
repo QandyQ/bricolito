@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  font-family: 'Playfair Display', serif;
+}
+video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 0;
+}
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 1;
+}
+.poem-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.poem-line {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.7s;
+  max-width: 80vw;
+  line-height: 1.3;
+  background: linear-gradient(90deg, #ff0000 0%, #000 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+  0 0 4px #ff0000,
+  0 0 8px #990000,
+  2px 2px 2px #000;
+  letter-spacing: 2px;
+}
+.poem-line.hide {
+  opacity: 0;
+}
+
+.bg-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 1;
+  transition: opacity 1s, filter 1s;
+  filter: blur(0px);
+}
+.bg-video.hidden {
+  opacity: 0;
+  filter: blur(20px);
+  pointer-events: none;
+}
+.bg-video.visible {
+  opacity: 1;
+  filter: blur(0px);
+  pointer-events: auto;
+}
+
+.heart-glow {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 1s;
+  /* Borde difuminado rojo */
+  box-shadow:
+    0 0 60px 30px #ff0000 inset,
+    0 0 120px 60px #ff0000 inset,
+    0 0 200px 100px #ff0033 inset;
+  border-radius: 30px;
+}
+
+@keyframes heartbeat {
+  0%, 100% { opacity: 0.7; }
+  20% { opacity: 1; }
+  40% { opacity: 0.7; }
+  60% { opacity: 1; }
+  80% { opacity: 0.7; }
+}
+
+.start-btn {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  padding: 30px 80px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(90deg, #ff0000 0%, #990000 100%);
+  border: none;
+  border-radius: 40px;
+  box-shadow: 0 0 40px #ff0000, 0 0 80px #990000;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.start-btn:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 0 60px #ff0000, 0 0 120px #990000;
+}
+
+/* Animación de parpadeo */
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+#play-music {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  font-size: 18px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  background-color: #dc0b0b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  animation: parpadeo 1s infinite; /* Hace que parpadee */
+}
+
+#play-music:hover {
+  background-color: #ff4d4d;
+}
