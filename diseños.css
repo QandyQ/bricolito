@@ -110,26 +110,24 @@ video {
 
 .start-btn {
   position: fixed;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 30px;
+  left: 30px;
   z-index: 100;
-  padding: 30px 80px;
-  font-size: 2.5rem;
+  padding: 10px 28px;
+  font-size: 1.2rem;
   font-weight: bold;
   color: #fff;
-  background: linear-gradient(90deg, #ff0000 0%, #990000 100%);
+  background: linear-gradient(90deg, #eae3e3 0%, #b95959 100%);
   border: none;
-  border-radius: 40px;
-  box-shadow: 0 0 40px #ff0000, 0 0 80px #990000;
+  border-radius: 20px;
+  box-shadow: 0 0 20px #ff0000, 0 0 40px #990000;
   cursor: pointer;
   transition: transform 0.2s;
 }
 .start-btn:hover {
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 0 60px #ff0000, 0 0 120px #990000;
+  transform: scale(1.07);
+  box-shadow: 0 0 30px #ff0000, 0 0 60px #990000;
 }
-
 /* Animación de parpadeo */
 @keyframes parpadeo {
   0%, 100% { opacity: 1; }
@@ -153,4 +151,35 @@ video {
 
 #play-music:hover {
   background-color: #ff4d4d;
+}
+
+.frase-apoyo {
+  position: fixed;
+  top: -2.5em;
+  /* left se asigna en JS */
+  z-index: 50;
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  pointer-events: none;
+  opacity: 0.95;
+  text-shadow: 0 0 8px #ff0000, 0 0 16px #000;
+  animation: caerYDesvanecer 7.8s linear forwards;
+  user-select: none;
+}
+
+@keyframes caerYDesvanecer {
+  0% {
+    top: -2.5em;
+    opacity: 0.95;
+    filter: blur(0px);
+  }
+  80% {
+    opacity: 0.95;
+    filter: blur(0px);
+  }
+  100% {
+    top: 100vh;
+    opacity: 0;
+    filter: blur(6px);
+  }
 }
