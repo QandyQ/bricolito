@@ -89,11 +89,48 @@ const frases = [
     "Mi bricolito es mi hogar aunque no esté cerca.",
     "No hay día en que no piense en ti.",
     "Mi bricolito, eres eterna en mí.",
-    "Siempre, siempre tú."
+    "Siempre, siempre tú.",
+    "Ella no se compara con nadie, mi bricolito siempre será única.",
+    "Mi bricolito no tiene igual, no existe otra como ella.",
+    "Nadie se acerca a lo que es mi bricolito.",
+    "Mi bricolito es incomparable, insustituible, irrepetible.",
+    "Ella no se mide con nadie, porque solo existe una: mi bricolito.",
+    "Nada ni nadie puede contigo.",
+    "El dolor nunca ha sido más grande que tu fuerza.",
+    "Eres de acero por dentro.",
+    "La vida te golpeó y aun así sigues en pie.",
+    "No hay tormenta que te quiebre.",
+    "Eres la definición de resistencia.",
+    "Tienes fuego en la sangre y valor en el alma.",
+    "Lo duro que has pasado no pudo destruirte.",
+    "No hay muro que no derribes.",
+    "Eres más fuerte que tus miedos.",
+    "Si el mundo te empuja, tú empujas más fuerte.",
+    "El dolor se rinde ante ti.",
+    "Eres una luchadora nata.",
+    "Tu fortaleza grita incluso en silencio.",
+    "No hay oscuridad que apague tu luz.",
+    "Las batallas no te vencen, te hacen más grande.",
+    "Tienes un corazón indestructible.",
+    "Eres tormenta y calma al mismo tiempo.",
+    "Nadie puede romper lo que tú eres."
 ];
 
+let frasesEnPantalla = new Set();
+let ultimaFrase = null;
+
 function lanzarFrase() {
-    const frase = frases[Math.floor(Math.random() * frases.length)];
+    // Filtra frases que no están en pantalla ni son la última usada
+    const disponibles = frases.filter(f =>
+        !frasesEnPantalla.has(f) && f !== ultimaFrase
+    );
+    // Si todas están en pantalla, permite repetir cualquiera menos la última
+    const pool = disponibles.length > 0 ? disponibles : frases.filter(f => f !== ultimaFrase);
+
+    // Elige una frase aleatoria del pool
+    const frase = pool[Math.floor(Math.random() * pool.length)];
+    ultimaFrase = frase;
+
     const span = document.createElement('span');
     span.textContent = frase;
     span.className = 'frase-apoyo';
@@ -101,32 +138,25 @@ function lanzarFrase() {
     // Posición horizontal aleatoria
     span.style.left = Math.random() * 80 + 10 + 'vw';
 
-    // Tamaño y color aleatorio (opcional)
+    // Tamaño y color aleatorio
     const colores = [
-    '#ff0033', // rojo fuerte
-    '#ff6666', // rojo claro
-    '#ff0000', // rojo puro
-    '#ff5050', // rojo medio
-    '#ff1919', // rojo oscuro
-    '#ffd700', // dorado
-    '#ff3399', // rosa fuerte
-    '#fff2b2', // amarillo suave
-    '#cccccc', // gris claro
-    '#fff'     // blanco
-];
+        '#ff0033', '#ff6666', '#ff0000', '#ff5050', '#ff1919',
+        '#ffd700', '#ff3399', '#fff2b2', '#cccccc', '#fff'
+    ];
     span.style.color = colores[Math.floor(Math.random() * colores.length)];
     span.style.fontSize = (Math.random() * 1.2 + 1.2) + 'rem';
 
     document.body.appendChild(span);
+    frasesEnPantalla.add(frase);
 
     // Elimina el elemento después de la animación
     span.addEventListener('animationend', () => {
         span.remove();
+        frasesEnPantalla.delete(frase);
     });
 }
 
-// Lanza frases cada 1.5 segundos
-setInterval(lanzarFrase, 1500);
+setInterval(lanzarFrase, 3500);
 </script>
 </body>
 </html>
