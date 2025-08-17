@@ -12,7 +12,11 @@
             Nuevo diseño, diseñándose...
         </div>
         <button id="ver-anterior-btn" class="ver-anterior-btn">Revisar la versión anterior</button>
+        <button id="btn-rompecabezas" class="btn-hello-kitty">o Prueba esto</button>
     </div>
+    <div class="puzzle-flex">
+  <div id="puzzle-container"></div>
+</div>
     <script>
         const mouseBlur = document.getElementById('mouse-blur');
 document.addEventListener('mousemove', (e) => {
@@ -22,6 +26,10 @@ document.addEventListener('mousemove', (e) => {
         document.getElementById('ver-anterior-btn').addEventListener('click', () => {
             window.location.href = "anterior.html"; // Cambia la URL si es necesario
         });
+
+        document.getElementById('btn-rompecabezas').addEventListener('click', () => {
+    window.location.href = "rompecabezas.html";
+});
     </script>
 </body>
 </html>
