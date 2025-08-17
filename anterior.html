@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Página con video de fondo y poema</title>
+    <link rel="stylesheet" href="diseños.css">
+</head>
+<body>
+    <video id="video5" class="bg-video visible" autoplay loop muted>
+        <source src="2020.mp4" type="video/mp4">
+    </video>
+    <audio id="bg-music" preload="auto" loop>
+        <source src="instrumental.mp3" type="audio/mpeg">
+        Tu navegador no soporta el audio.
+    </audio>
+    <button id="start-btn" class="start-btn">INICIAR</button>
+    <div class="overlay"></div>
+    <div class="poem-container">
+        <div id="poem-line" class="poem-line">
+            Mientras siga con vida, mi corazón latirá por ti
+            y por toda la eternidad.
+        </div>
+    </div>
+    <div id="heart-glow" class="heart-glow"></div>
+    <script>
+        const heartGlow = document.getElementById('heart-glow');
+        const audio = document.getElementById('bg-music');
+        const startBtn = document.getElementById('start-btn');
+
+        // Latido SIEMPRE visible y animado desde el inicio
+        heartGlow.style.opacity = '1';
+        heartGlow.style.animation = 'heartbeat 1.5s infinite';
+
+        // Botón solo activa la música
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = "none";
+            audio.play();
+        });
+    </script>
+    <script>
+const frases = [
+    "Mi bricolito, siempre vas a valer más de lo que piensas.",
+    "Yo sé lo fuerte que eres, aunque a veces lo olvides.",
+    "Mi bricolito nunca estará sola, porque aquí estoy yo.",
+    "Tú eres lo más bonito que me pasó.",
+    "Aunque duela la distancia, yo creo en ti.",
+    "Todo lo que haces tiene valor, aunque no lo veas.",
+    "Mi bricolito merece días suaves.",
+    "Tú eres más grande que todo lo que intentó romperte.",
+    "Nadie tiene tu corazón, solo tú y yo sabemos cuánto vale.",
+    "Mi bricolito, yo siempre te esperaré.",
+    "A tu tiempo, yo te buscaré.",
+    "Tu sonrisa es suficiente para darle sentido a todo.",
+    "Mi bricolito, no olvides lo fuerte que eres.",
+    "Cada día que pasa, mi fe en ti crece.",
+    "Eres mi fuerza y mi calma al mismo tiempo.",
+    "Pase lo que pase, tú siempre serás mi bricolito.",
+    "Lo nuestro no lo rompe la distancia.",
+    "Tú eres el motivo por el que creo en lo bueno.",
+    "Mi bricolito brilla incluso en sus días oscuros.",
+    "Me basta saber que existes para sonreír.",
+    "Mi bricolito merece paz en cada paso.",
+    "Yo sé que lo lograrás, siempre confío en ti.",
+    "Eres más especial de lo que imaginas.",
+    "Nadie en el mundo es como mi bricolito.",
+    "Mi bricolito no tiene comparación, es única.",
+    "A veces pienso en ti y me lleno de calma.",
+    "No hay dolor que te quite lo increíble que eres.",
+    "Mi bricolito es un milagro en mi vida.",
+    "Tú eres mi razón de luchar cada día.",
+    "Aunque me pidas distancia, sigo contigo en silencio.",
+    "Mi bricolito no necesita demostrar nada, ya lo es todo.",
+    "Siempre vas a tener mi apoyo.",
+    "Mi bricolito no se rinde, yo lo sé.",
+    "Eres mi fuerza, aunque estés lejos.",
+    "Mi bricolito, nunca dudes de ti.",
+    "Yo sé que lo bueno llegará a tu vida.",
+    "No hay otra como tú, y nunca la habrá.",
+    "Mi bricolito siempre será mi inspiración.",
+    "Pase lo que pase, mi bricolito vale todo.",
+    "Si caes, aquí estoy para recordarte quién eres.",
+    "Mi bricolito merece ternura, no dolor.",
+    "Nunca dejaré de creer en ti.",
+    "Mi bricolito siempre será mi elección.",
+    "Aunque el mundo pese, tú sigues brillando.",
+    "Mi bricolito es mi orgullo, aunque no lo sepa.",
+    "Yo te espero con calma, sin prisa.",
+    "Mi bricolito es mi hogar aunque no esté cerca.",
+    "No hay día en que no piense en ti.",
+    "Mi bricolito, eres eterna en mí.",
+    "Siempre, siempre tú.",
+    "Ella no se compara con nadie, mi bricolito siempre será única.",
+    "Mi bricolito no tiene igual, no existe otra como ella.",
+    "Nadie se acerca a lo que es mi bricolito.",
+    "Mi bricolito es incomparable, insustituible, irrepetible.",
+    "Ella no se mide con nadie, porque solo existe una: mi bricolito.",
+    "Nada ni nadie puede contigo.",
+    "El dolor nunca ha sido más grande que tu fuerza.",
+    "Eres de acero por dentro.",
+    "La vida te golpeó y aun así sigues en pie.",
+    "No hay tormenta que te quiebre.",
+    "Eres la definición de resistencia.",
+    "Tienes fuego en la sangre y valor en el alma.",
+    "Lo duro que has pasado no pudo destruirte.",
+    "No hay muro que no derribes.",
+    "Eres más fuerte que tus miedos.",
+    "Si el mundo te empuja, tú empujas más fuerte.",
+    "El dolor se rinde ante ti.",
+    "Eres una luchadora nata.",
+    "Tu fortaleza grita incluso en silencio.",
+    "No hay oscuridad que apague tu luz.",
+    "Las batallas no te vencen, te hacen más grande.",
+    "Tienes un corazón indestructible.",
+    "Eres tormenta y calma al mismo tiempo.",
+    "Nadie puede romper lo que tú eres.",
+    "Primero tú, porque nada es más valioso que tu esencia.",
+    "No olvides ponerte en primer lugar.",
+    "Primero tú, porque tu vida importa demasiado.",
+    "Cuídate tanto como cuidas a los demás.",
+    "Primero tú, porque tu luz no debe apagarse.",
+    "Tu valor no depende de nadie, ponlo primero.",
+    "Primero tú, bricolito, porque el mundo necesita tu mejor versión."
+];
+
+let frasesEnPantalla = new Set();
+let ultimaFrase = null;
+
+function lanzarFrase() {
+    // Filtra frases que no están en pantalla ni son la última usada
+    const disponibles = frases.filter(f =>
+        !frasesEnPantalla.has(f) && f !== ultimaFrase
+    );
+    // Si todas están en pantalla, permite repetir cualquiera menos la última
+    const pool = disponibles.length > 0 ? disponibles : frases.filter(f => f !== ultimaFrase);
+
+    // Elige una frase aleatoria del pool
+    const frase = pool[Math.floor(Math.random() * pool.length)];
+    ultimaFrase = frase;
+
+    const span = document.createElement('span');
+    span.textContent = frase;
+    span.className = 'frase-apoyo';
+
+    // Posición horizontal aleatoria
+    span.style.left = Math.random() * 80 + 10 + 'vw';
+
+    // Tamaño y color aleatorio
+    const colores = [
+        '#ff0033', '#ff6666', '#ff0000', '#ff5050', '#ff1919',
+        '#ffd700', '#ff3399', '#fff2b2', '#cccccc', '#fff'
+    ];
+    span.style.color = colores[Math.floor(Math.random() * colores.length)];
+    span.style.fontSize = (Math.random() * 1.2 + 1.2) + 'rem';
+
+    document.body.appendChild(span);
+    frasesEnPantalla.add(frase);
+
+    // Elimina el elemento después de la animación
+    span.addEventListener('animationend', () => {
+        span.remove();
+        frasesEnPantalla.delete(frase);
+    });
+}
+
+setInterval(lanzarFrase, 3500);
+</script>
+</body>
+</html>
