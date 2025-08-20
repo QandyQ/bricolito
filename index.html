@@ -6,30 +6,10 @@
     <link rel="stylesheet" href="diseños.css">
 </head>
 <body>
-    <div id="mouse-blur"></div>
-    <div class="nuevo-diseno-container">
-        <div class="nuevo-diseno-mensaje">
-            Nuevo diseño, diseñándose...
+    <div class="minimal-container">
+        <div class="minimal-message">
+            Página en proceso, vuelva pronto... o nunca
         </div>
-        <button id="ver-anterior-btn" class="ver-anterior-btn">Revisar la versión anterior</button>
-        <button id="btn-rompecabezas" class="btn-hello-kitty">o Prueba esto</button>
     </div>
-    <div class="puzzle-flex">
-  <div id="puzzle-container"></div>
-</div>
-    <script>
-        const mouseBlur = document.getElementById('mouse-blur');
-document.addEventListener('mousemove', (e) => {
-    mouseBlur.style.left = e.clientX + 'px';
-    mouseBlur.style.top = e.clientY + 'px';
-});
-        document.getElementById('ver-anterior-btn').addEventListener('click', () => {
-            window.location.href = "anterior.html"; // Cambia la URL si es necesario
-        });
-
-        document.getElementById('btn-rompecabezas').addEventListener('click', () => {
-    window.location.href = "rompecabezas.html";
-});
-    </script>
 </body>
 </html>

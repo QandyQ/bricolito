@@ -327,3 +327,21 @@ body, #puzzle-container {
   z-index: 999;
   pointer-events: none; /* Para que no bloquee clics */
 }
+
+.minimal-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.minimal-message {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: #222;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 40px 32px;
+  border-radius: 18px;
+  box-shadow: 0 2px 24px 0
