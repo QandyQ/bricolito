@@ -16,106 +16,115 @@
         <span id="carrusel-indicador">1 / 5</span>
         <button id="next-carta" class="carrusel-btn">&#8594;</button>
     </div>
-    <div class="carrusel-cartas">
-        <div class="contenedor carta-activa">
-            <!-- Carta 1 (tu carta actual, puedes copiar el contenido) -->
-            <div class="envoltura-sobre">
-                <div class="sobre">
-                    <div class="carta">
-                        <div class="contenido">
-                            <strong>Querida Bricolito</strong>
-                            <p>...contenido carta 1...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="corazon"></div>
-                <div class="solapa-derecha"></div>
-                <div class="solapa-izquierda"></div>
+    <div class="carrusel-slider">
+  <div class="carrusel-track">
+    <div class="contenedor carta-activa">
+      <!-- Carta 1 -->
+      <div class="envoltura-sobre">
+        <div class="sobre">
+          <div class="carta">
+            <div class="contenido">
+              <strong>Querida Bricolito</strong>
+              <p>...contenido carta 1...</p>
             </div>
+          </div>
         </div>
-        <div class="contenedor">
-            <!-- Carta 2 -->
-            <div class="envoltura-sobre">
-                <!-- ...estructura igual, cambia el contenido... -->
-                <div class="sobre">
-                    <div class="carta">
-                        <div class="contenido">
-                            <strong>Carta 2</strong>
-                            <p>Contenido de la carta 2...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="corazon"></div>
-                <div class="solapa-derecha"></div>
-                <div class="solapa-izquierda"></div>
-            </div>
-        </div>
-        <!-- Repite hasta carta 5 -->
-        <div class="contenedor">
-            <div class="envoltura-sobre">
-                <div class="sobre">
-                    <div class="carta">
-                        <div class="contenido">
-                            <strong>Carta 3</strong>
-                            <p>Contenido de la carta 3...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="corazon"></div>
-                <div class="solapa-derecha"></div>
-                <div class="solapa-izquierda"></div>
-            </div>
-        </div>
-        <div class="contenedor">
-            <div class="envoltura-sobre">
-                <div class="sobre">
-                    <div class="carta">
-                        <div class="contenido">
-                            <strong>Carta 4</strong>
-                            <p>Contenido de la carta 4...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="corazon"></div>
-                <div class="solapa-derecha"></div>
-                <div class="solapa-izquierda"></div>
-            </div>
-        </div>
-        <div class="contenedor">
-            <div class="envoltura-sobre">
-                <div class="sobre">
-                    <div class="carta">
-                        <div class="contenido">
-                            <strong>Carta 5</strong>
-                            <p>Contenido de la carta 5...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="corazon"></div>
-                <div class="solapa-derecha"></div>
-                <div class="solapa-izquierda"></div>
-            </div>
-        </div>
+        <div class="corazon"></div>
+        <div class="solapa-derecha"></div>
+        <div class="solapa-izquierda"></div>
+      </div>
     </div>
+    <div class="contenedor">
+      <!-- Carta 2 -->
+      <div class="envoltura-sobre">
+        <div class="sobre">
+          <div class="carta">
+            <div class="contenido">
+              <strong>Carta 2</strong>
+              <p>Contenido de la carta 2...</p>
+            </div>
+          </div>
+        </div>
+        <div class="corazon"></div>
+        <div class="solapa-derecha"></div>
+        <div class="solapa-izquierda"></div>
+      </div>
+    </div>
+    <div class="contenedor">
+      <!-- Carta 3 -->
+      <div class="envoltura-sobre">
+        <div class="sobre">
+          <div class="carta">
+            <div class="contenido">
+              <strong>Carta 3</strong>
+              <p>Contenido de la carta 3...</p>
+            </div>
+          </div>
+        </div>
+        <div class="corazon"></div>
+        <div class="solapa-derecha"></div>
+        <div class="solapa-izquierda"></div>
+      </div>
+    </div>
+    <div class="contenedor">
+      <!-- Carta 4 -->
+      <div class="envoltura-sobre">
+        <div class="sobre">
+          <div class="carta">
+            <div class="contenido">
+              <strong>Carta 4</strong>
+              <p>Contenido de la carta 4...</p>
+            </div>
+          </div>
+        </div>
+        <div class="corazon"></div>
+        <div class="solapa-derecha"></div>
+        <div class="solapa-izquierda"></div>
+      </div>
+    </div>
+    <div class="contenedor">
+      <!-- Carta 5 -->
+      <div class="envoltura-sobre">
+        <div class="sobre">
+          <div class="carta">
+            <div class="contenido">
+              <strong>Carta 5</strong>
+              <p>Contenido de la carta 5...</p>
+            </div>
+          </div>
+        </div>
+        <div class="corazon"></div>
+        <div class="solapa-derecha"></div>
+        <div class="solapa-izquierda"></div>
+      </div>
+    </div>
+  </div>
+</div>
     <script src="script_v2.js"></script>
+    <script src="carrusel.js"></script>
     <script>
-        // Carrusel simple
-        const cartas = document.querySelectorAll('.carrusel-cartas .contenedor');
-        const indicador = document.getElementById('carrusel-indicador');
-        let actual = 0;
-        function mostrarCarta(idx) {
-            cartas.forEach((c, i) => c.classList.toggle('carta-activa', i === idx));
-            indicador.textContent = (idx + 1) + ' / ' + cartas.length;
-        }
-        document.getElementById('prev-carta').onclick = () => {
-            actual = (actual - 1 + cartas.length) % cartas.length;
-            mostrarCarta(actual);
-        };
-        document.getElementById('next-carta').onclick = () => {
-            actual = (actual + 1) % cartas.length;
-            mostrarCarta(actual);
-        };
-        mostrarCarta(actual);
-    </script>
+const track = document.querySelector('.carrusel-track');
+const cartas = document.querySelectorAll('.carrusel-track .contenedor');
+const indicador = document.getElementById('carrusel-indicador');
+let actual = 0;
+
+function mostrarCarta(idx) {
+    cartas.forEach((c, i) => c.classList.toggle('carta-activa', i === idx));
+    indicador.textContent = (idx + 1) + ' / ' + cartas.length;
+    // Calcula el desplazamiento para centrar la carta activa
+    const cartaWidth = cartas[0].offsetWidth + 40; // 40 = 2*margin
+    const offset = (cartaWidth * idx) - ((track.offsetWidth - cartaWidth) / 2);
+    track.style.transform = `translateX(${-offset}px)`;
+}
+document.getElementById('prev-carta').onclick = () => {
+    actual = (actual - 1 + cartas.length) % cartas.length;
+    mostrarCarta(actual);
+};
+document.getElementById('next-carta').onclick = () => {
+    actual = (actual + 1) % cartas.length;
+    mostrarCarta(actual);
+};
+mostrarCarta(actual);
+</script>
 </body>
 </html>

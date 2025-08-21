@@ -257,8 +257,34 @@ h1 {
     display: flex;
 }
 
-
-
-
-
-
+.carrusel-slider {
+    width: 1300px;
+    height: 940px;
+    overflow: hidden;
+    margin: 0 auto 2rem auto;
+    position: relative;
+     display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center;
+    padding-top: 100px; /* Ajusta según lo que necesites */
+}
+.carrusel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(.77,0,.18,1.01);
+    will-change: transform;
+}
+.carrusel-track .contenedor {
+    min-width: 360px;
+    margin: 0 20px;
+    transition: transform 0.5s, opacity 0.5s;
+    opacity: 0.5;
+    transform: scale(0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.carrusel-track .contenedor.carta-activa {
+    opacity: 1;
+    transform: scale(1.05);
+    z-index: 2;
+}
