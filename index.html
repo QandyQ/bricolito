@@ -249,6 +249,13 @@
     <script src="script_v2.js"></script>
     <script src="carrusel.js"></script>
     <script>
+      fetch('https://bricolito.netlify.app/puede-ver')
+  .then(res => res.json())
+  .then(data => {
+    if (!data.permitido) {
+      window.location.href = "anterior.html";
+    }
+  });
 const track = document.querySelector('.carrusel-track');
 const cartas = document.querySelectorAll('.carrusel-track .contenedor');
 const indicador = document.getElementById('carrusel-indicador');
@@ -261,6 +268,9 @@ function mostrarCarta(idx) {
     const cartaWidth = cartas[0].offsetWidth + 40; // 40 = 2*margin
     const offset = (cartaWidth * idx) - ((track.offsetWidth - cartaWidth) / 2);
     track.style.transform = `translateX(${-offset}px)`;
+    if (idx === cartas.length - 1) {
+    fetch('https://bricolito.netlify.app/terminar', { method: 'POST' });
+}
 }
 document.getElementById('prev-carta').onclick = () => {
     actual = (actual - 1 + cartas.length) % cartas.length;
