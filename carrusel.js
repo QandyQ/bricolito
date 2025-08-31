@@ -21,3 +21,19 @@ document.getElementById('next-carta').onclick = () => {
     mostrarCarta(actual);
 };
 mostrarCarta(actual);
+
+// Mostrar notificación de carta nueva
+const notificacion = document.getElementById('notificacion-carta');
+const btnIrUltima = document.getElementById('ir-ultima-carta');
+if (cartas.length > 1) {
+  notificacion.style.display = 'block';
+  btnIrUltima.onclick = () => {
+    actual = cartas.length - 1;
+    mostrarCarta(actual);
+    notificacion.style.display = 'none';
+  };
+  // Oculta la notificación automáticamente después de 10 segundos
+  setTimeout(() => {
+    notificacion.style.display = 'none';
+  }, 10000);
+}
