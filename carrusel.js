@@ -37,3 +37,9 @@ if (cartas.length > 1) {
     notificacion.style.display = 'none';
   }, 10000);
 }
+// Bloquear acceso en móviles
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    document.body.innerHTML = '<div style="text-align:center;padding:4em;font-size:1.5em;color:#c94f6d;">Esta página solo está disponible en computadoras.</div>';
+    // Opcional: redirigir a otra página
+    // window.location.href = "pagina_no_soportada.html";
+}
