@@ -35,7 +35,7 @@ if (cartas.length > 1) {
   // Oculta la notificación automáticamente después de 10 segundos
   setTimeout(() => {
     notificacion.style.display = 'none';
-  }, 10000);
+  }, 20000);
 }
 // Bloquear acceso en móviles
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
