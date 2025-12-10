@@ -440,6 +440,50 @@ solo quiero que sepas que eres mi razón más querida y lo ultimo que quiero es 
   </div>
 </div>
 
+<div class="contenedor">
+  <!-- Carta 10 -->
+  <div class="envoltura-sobre">
+    <div class="sobre">
+      <div class="carta">
+        <div class="contenido">
+  <strong>Carta 11</strong>
+  <!-- Reproductor nativo -->
+  <audio controls src="romeo.mp3">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+  <p>
+    Mi amor, cada vez que escucho esta canción, siento que habla de nosotros. Es como si cada nota y cada palabra estuvieran hechas para contar nuestra historia. Quiero que sepas que cada vez que la escucho, pienso en ti y en lo especial que eres para mí. Eres mi inspiración y mi alegría, y esta canción es un pequeño reflejo de lo mucho que te amo.
+    Si tuviera una fortuna te daria todo hasta mi vida pero no puedo darte mas que mi amor sincero y puro que siento por ti.
+    Tú sabes cómo soy contigo:
+todo lo que digo, todo lo que hago,
+es porque contigo me siento en confianza,
+porque contigo puedo jugar, reírme, y ser yo sin miedo.
+Pero esta vez me equivoqué.
+No leí tu ánimo, no entendí el momento,
+y terminé haciéndote sentir mal cuando lo último que quiero en el mundo es herirte.
+
+Tú eres mi santa, mi amor, mi delicadeza.
+Eres la persona por la que yo callaría mil bromas,
+mil tonterías,
+si eso significa que te voy a ver tranquila, sonriendo como siempre.
+
+Perdóname si fallé en ese instante.
+Perdóname si te hice daño sin querer.
+Yo solo quería seguir tu chiste, no romper tu corazón.
+Te amo, Bricolito.
+Y no quiero un cielo sin ti.
+Tú eres mi calma, mi locura bonita,
+mi razón de querer ser mejor.
+Mi santa… en todas mis versiones.
+</p>
+      </div>
+    </div>
+    <div class="corazon"></div>
+    <div class="solapa-derecha"></div>
+    <div class="solapa-izquierda"></div>
+  </div>
+</div>
+
 </div>
  
   </div>
@@ -448,6 +492,7 @@ solo quiero que sepas que eres mi razón más querida y lo ultimo que quiero es 
   <strong>Carta nueva añadida</strong><br>
   <button id="ir-ultima-carta" style="margin-top:0.7em; background:#ffc1cc; border:none; border-radius:8px; padding:0.5em 1.2em; color:#c94f6d; font-weight:bold; cursor:pointer;">Ir a la carta</button>
 </div>
+<div class="falling-container" id="falling-container"></div>
     <script src="script_v2.js"></script>
     <script src="carrusel.js"></script>
     <script>
@@ -483,6 +528,123 @@ document.getElementById('next-carta').onclick = () => {
     mostrarCarta(actual);
 };
 mostrarCarta(actual);
+
+// Control de audio: play/pause sin cerrar la carta
+document.querySelectorAll('.play-audio').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation(); // evita que el click cierre/abra el sobre
+
+    const cont = btn.closest('.contenedor');
+    if (!cont) return;
+    const audio = cont.querySelector('.audio-carta');
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.play();
+      btn.classList.add('playing');
+      btn.textContent = '⏸';
+    } else {
+      audio.pause();
+      btn.classList.remove('playing');
+      btn.textContent = '▶';
+    }
+
+    audio.onended = () => {
+      btn.classList.remove('playing');
+      btn.textContent = '▶';
+    };
+  });
+});
+
+// Añade esto al final del <script>, después de tu código actual
+
+const fadingRoot = document.getElementById('fading-container');
+// Selecciona el reproductor nativo de la Carta 11 (tu audio en index.html)
+const audioCarta11 = document.querySelector('audio[src="romeo.mp3"]');
+
+// Lista de imágenes (ajusta nombres reales dentro de la carpeta "fotos")
+const fuentesImg = [
+  'fotos/1.jpg',
+  'fotos/2.jpg',
+  'fotos/3.jpg',
+  'fotos/4.jpg',
+  'fotos/5.jpg',
+  'fotos/6.jpg',
+  'fotos/7.jpg',
+  'fotos/8.jpg',
+  'fotos/9.jpg',
+  'fotos/10.jpg',
+  'fotos/11.jpg',
+  'fotos/12.jpg',
+  'fotos/13.jpg',
+  'fotos/14.jpg',
+  'fotos/15.jpg',
+  'fotos/16.jpg',
+  'fotos/17.jpg',
+  'fotos/18.jpg',
+  // ...añade más archivos si los tienes
+];
+
+function crearFadingItem() {
+  const img = document.createElement('img');
+  img.src = fuentesImg[Math.floor(Math.random() * fuentesImg.length)];
+  img.className = 'fading-item';
+
+  // Tamaño: conserva proporción, solo ajusta ancho
+  const size = 56 + Math.random() * 34; // 56–90 px
+  img.style.width = `${size}px`;
+  img.style.height = 'auto';
+
+  // Posición aleatoria (evitando bordes)
+  const pad = 24;
+  const x = pad + Math.random() * (window.innerWidth - pad * 2);
+  const y = pad + Math.random() * (window.innerHeight - pad * 2);
+  img.style.left = `${x}px`;
+  img.style.top = `${y}px`;
+
+  // Duración variable
+  const dur = 4.5 + Math.random() * 2.0;
+  img.style.animationDuration = `${dur}s`;
+
+  fadingRoot.appendChild(img);
+  setTimeout(() => img.remove(), dur * 1000 + 300);
+}
+
+let fadeIntervalId = null;
+function iniciarFading() {
+  if (fadeIntervalId) return;
+  // Una imagen cada ~600–1100 ms
+  fadeIntervalId = setInterval(() => crearFadingItem(), 600 + Math.random() * 500);
+}
+function detenerFading() {
+  if (fadeIntervalId) {
+    clearInterval(fadeIntervalId);
+    fadeIntervalId = null;
+  }
+}
+
+if (audioCarta11) {
+  let saltoHecho = false;
+
+  audioCarta11.addEventListener('play', () => {
+    // salta a 25s la primera vez que se reproduce
+    if (!saltoHecho) {
+      if (audioCarta11.readyState >= 1) {
+        audioCarta11.currentTime = 25;
+        saltoHecho = true;
+      } else {
+        audioCarta11.addEventListener('loadedmetadata', () => {
+          audioCarta11.currentTime = 25;
+          saltoHecho = true;
+        }, { once: true });
+      }
+    }
+    iniciarFading();
+  });
+
+  audioCarta11.addEventListener('pause', detenerFading);
+  audioCarta11.addEventListener('ended', detenerFading);
+}
 </script>
 </body>
 </html>
