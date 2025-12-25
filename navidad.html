@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Especial de Navidad</title>
+  <meta name="description" content="Apartado navideño con mensaje y espacio para contenido festivo." />
+  <style>
+    :root {
+      --rojo: #c62828;
+      --verde: #1b5e20;
+      --dorado: #ffd54f;
+      --blanco: #ffffff;
+      --oscuro: #0d0f12;
+      --rosa: #ff6fb7;
+      --celeste: #6ec6ff;
+      --lila: #b39ddb;
+      --coral: #ff8a65;
+      --menta: #80cbc4;
+      --amarillo: #ffd54f;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+      color: var(--blanco);
+      /* Solo la imagen de fondo, sin degradados */
+      background: url("fotos/cute-kitty.jpg") center / cover no-repeat fixed;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    .snow { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .snowflake {
+      position: absolute; top: -12%; left: 0; width: var(--size); height: var(--size);
+      display: block; color: #fff8e1; opacity: 0.98;
+      text-shadow: 0 0 6px rgba(255,213,79,0.85), 0 0 12px rgba(255,213,79,0.55);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,213,79,0.65)) drop-shadow(0 0 14px rgba(255,213,79,0.45));
+      animation: fall var(--duration) linear forwards, sway var(--sway) ease-in-out infinite;
+      will-change: top, transform, opacity, filter;
+    }
+    @keyframes fall { to { top: 100%; opacity: 0; } }
+    @keyframes sway { 0% { transform: translateX(-12px); } 50% { transform: translateX(12px); } 100% { transform: translateX(-12px); } }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px; backdrop-filter: blur(4px);
+      background: linear-gradient(90deg, rgba(0,0,0,0.15), rgba(0,0,0,0.05));
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    header .brand { display: flex; gap: 10px; align-items: center; font-weight: 700; letter-spacing: 0.5px; }
+    header .brand .emoji { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35)); font-size: 22px; }
+    header nav a {
+      color: var(--blanco); text-decoration: none; padding: 8px 12px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    header nav a:hover { background: rgba(255,255,255,0.1); }
+
+    main { display: grid; place-items: center; padding: 24px; }
+    .hero {
+      max-width: 880px; text-align: center; padding: 32px 24px; position: relative;
+      border-radius: 18px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .hero h1 { font-size: clamp(28px, 4.6vw, 48px); margin: 0 0 8px; }
+    .hero p { margin: 0 0 18px; font-size: clamp(14px, 2.5vw, 18px); opacity: 0.95; }
+
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600;
+      color: var(--oscuro); background: var(--dorado); padding: 10px 16px; border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.45);
+    }
+    .cta:hover { filter: brightness(1.05); transform: translateY(-1px); transition: all 160ms ease; }
+
+    /* Capa de video a pantalla completa (fallback si fullscreen falla) */
+    .fs-video {
+      position: fixed; inset: 0; width: 100vw; height: 100vh;
+      object-fit: contain; background: #000; z-index: 9999;
+    }
+    /* Overlay para mostrar la imagen "carta-hello" encima de todo */
+    .overlay-card { position: fixed; inset: 0; display: grid; place-items: center; z-index: 10000; pointer-events: auto; }
+    .overlay-card::before { content: ""; position: absolute; inset: 0; backdrop-filter: blur(4px); background: rgba(0,0,0,0.18); }
+    .overlay-card .panel { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .overlay-card img {
+      position: relative; width: min(520px, 85vw); height: auto; border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 0 6px rgba(255,255,255,0.18);
+      animation: pop-in 600ms cubic-bezier(.2,.7,.2,1) 1, floaty 6s ease-in-out 1.2s infinite;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.35));
+    }
+    .btn-next {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700;
+      color: var(--oscuro); background: var(--dorado); padding: 10px 18px; border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.45);
+      cursor: pointer;
+    }
+    .btn-next:hover { filter: brightness(1.08); transform: translateY(-1px); transition: all 160ms ease; }
+    @keyframes pop-in { 0% { opacity: 0; transform: scale(.88) translateY(14px); } 60% { opacity: 1; transform: scale(1.04) translateY(0); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes floaty { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
+    /* Overlay siguiente con imagen a la izquierda y texto a la derecha */
+    .overlay-next { position: fixed; inset: 0; display: grid; place-items: center; z-index: 10000; pointer-events: auto; }
+    .overlay-next::before { content: ""; position: absolute; inset: 0; backdrop-filter: blur(4px); background: rgba(0,0,0,0.28); }
+    .overlay-next .panel { position: relative; display: flex; align-items: center; gap: 16px; padding: 10px; }
+    .overlay-next img { width: min(520px, 80vw); height: auto; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 0 6px rgba(255,255,255,0.18); animation: pop-in 600ms cubic-bezier(.2,.7,.2,1) 1; }
+    .overlay-next .text { width: min(420px, 80vw); color: var(--blanco); background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; padding: 14px; box-shadow: 0 10px 24px rgba(0,0,0,0.35); overflow: hidden; transition: max-height 300ms ease; }
+    .overlay-next .text h3 { margin: 0 0 8px; color: var(--dorado); }
+    .overlay-next .text p { margin: 0 0 8px; opacity: .95; line-height: 1.6; }
+    @media (max-width: 768px) { .overlay-next .panel { flex-direction: column; } }
+    /* Corazones cayendo tras finalizar la carta */
+    .hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10001; }
+    .heart {
+      position: absolute; top: -12%; left: 0; width: var(--size); height: var(--size);
+      background: url('fotos/corazon.png') center / contain no-repeat;
+      animation: heart-fall var(--duration) linear forwards, heart-sway var(--sway) ease-in-out infinite, heart-pulse 1.6s ease-in-out infinite, heart-sparkle 2.4s linear infinite;
+      will-change: top, transform, opacity, filter;
+      /* brillo rojo inicial */
+      filter: drop-shadow(0 0 8px rgba(255,0,0,0.55)) drop-shadow(0 0 16px rgba(255,0,0,0.35));
+    }
+    @keyframes heart-fall { to { top: 100%; opacity: 0; } }
+    @keyframes heart-sway { 0% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 100% { transform: translateX(-10px); } }
+    @keyframes heart-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); } }
+    @keyframes heart-sparkle {
+      0%   { filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)) drop-shadow(0 0 10px rgba(255,0,0,0.55)) drop-shadow(0 0 18px rgba(255,0,0,0.38)) brightness(1); }
+      50%  { filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)) drop-shadow(0 0 12px rgba(255,0,0,0.8)) drop-shadow(0 0 22px rgba(255,0,0,0.55)) brightness(1.35); }
+      100% { filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)) drop-shadow(0 0 10px rgba(255,0,0,0.55)) drop-shadow(0 0 18px rgba(255,0,0,0.38)) brightness(1); }
+    }
+
+    .grid {
+      margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;
+    }
+    .card {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px;
+      padding: 16px; min-height: 120px;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 18px; }
+    .card p { margin: 0; font-size: 14px; opacity: 0.9; }
+
+    footer {
+      padding: 16px 20px; text-align: center; font-size: 13px; opacity: 0.85;
+    }
+    /* ---- Rompecabezas ---- */
+    .puzzle { display: none; margin-top: 28px; width: 100%; }
+    .puzzle.active { display: block; }
+    .puzzle .wrap { display: grid; place-items: center; gap: 12px; }
+    .puzzle-board {
+      --size: 3; /* se ajusta por JS */
+      width: min(680px, 95vw);
+      /* La relación de aspecto se ajusta dinámicamente al de la imagen via JS */
+      display: grid; grid-template-columns: repeat(var(--size), 1fr);
+      gap: 4px; padding: 4px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      user-select: none;
+    }
+    .piece {
+      border-radius: 8px;
+      background-image: url('fotos/rompecabezas-hello.png');
+      background-repeat: no-repeat;
+      background-size: calc(var(--size) * 100%) calc(var(--size) * 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25), 0 3px 8px rgba(0,0,0,0.25);
+    }
+    .piece[draggable="true"] { cursor: grab; }
+    .piece:active { cursor: grabbing; }
+    /* ---- Regalos ---- */
+    .gifts { display: none; width: 100%; max-width: 880px; }
+    .gifts.active { display: block; }
+    .gifts h3 { margin: 8px 0 12px; text-align: center; color: var(--dorado); text-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+    .gift-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .gift-card { color: #0d0f12; border-radius: 12px; padding: 12px; text-align: center;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.45);
+    }
+    .gift-card .title { font-weight: 800; margin-bottom: 6px; letter-spacing: .2px; }
+    .gift-card .desc { font-size: 13px; opacity: .95; }
+    /* Paletas coloridas por tarjeta */
+    .gift-card:nth-child(1) { background: linear-gradient(135deg, #ff93c9 0%, var(--rosa) 100%); }
+    .gift-card:nth-child(2) { background: linear-gradient(135deg, #a7ffeb 0%, var(--menta) 100%); }
+    .gift-card:nth-child(3) { background: linear-gradient(135deg, #ffe082 0%, #ffb74d 100%); }
+    .gift-card:nth-child(4) { background: linear-gradient(135deg, #ffab91 0%, var(--coral) 100%); }
+    .gift-card:nth-child(5) { background: linear-gradient(135deg, #b3e5fc 0%, var(--celeste) 100%); }
+    .gift-card:nth-child(6) { background: linear-gradient(135deg, #f8bbd0 0%, #f48fb1 100%); }
+    .gift-card:nth-child(7) { background: linear-gradient(135deg, #c8e6c9 0%, #81c784 100%); }
+    .gift-card:nth-child(8) { background: linear-gradient(135deg, #d1c4e9 0%, var(--lila) 100%); }
+    .btn-pending {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700;
+      color: var(--oscuro); background: var(--dorado); padding: 10px 18px; border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.45);
+      cursor: pointer; margin: 14px auto 0; display: block;
+    }
+    .btn-pending:hover { filter: brightness(1.08); transform: translateY(-1px); transition: all 160ms ease; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="emoji">🎄</span>
+      <span>Especial de Navidad</span>
+    </div>
+    <nav>
+      <a href="index.html" aria-label="Volver al inicio">Volver al inicio</a>
+    </nav>
+  </header>
+  <div class="snow" aria-hidden="true"></div>
+
+  <main>
+    <section class="hero" aria-labelledby="titulo-navidad">
+      <h1 id="titulo-navidad">¡Feliz Navidad! ✨</h1>
+      <p>
+        Este es tu apartado navideño. Aquí agregaremos felicitaciones,
+        actividades, regalos y cualquier contenido festivo que quieras mostrar.
+      </p>
+      <a id="play1225" class="cta" href="#" aria-label="Dame click corazon">Dame click corazon</a>
+    </section>
+
+    <!-- Sección del rompecabezas (misma página, se activa tras el botón) -->
+    <section id="rompecabezas" class="puzzle" aria-labelledby="titulo-puzzle">
+      <div class="wrap">
+        <h2 id="titulo-puzzle" style="margin:0">Rompecabezas Hello</h2>
+        <p style="margin:6px 0 6px; opacity:.92">Arrastra las piezas hasta formar la imagen completa.</p>
+        <div id="puzzleBoard" class="puzzle-board" aria-label="Tablero de rompecabezas"></div>
+        <div style="display:flex; gap:10px; align-items:center">
+          <button id="puzzleShuffle" class="btn-next" type="button">Mezclar</button>
+          <span id="puzzleStatus" style="opacity:.92"></span>
+        </div>
+        <div id="giftArea" class="gifts" aria-live="polite">
+          <h3>FELICIDADES te ganaste un regalo pendiente</h3>
+          <div class="gift-grid">
+            <div class="gift-card"><div class="title">Cupon de besos 💋</div><div class="desc">Válido cuando tú quieras.</div></div>
+            <div class="gift-card"><div class="title">Cupon de abrazos 🤗</div><div class="desc">Sin fecha de vencimiento.</div></div>
+            <div class="gift-card"><div class="title">Chocolates 🍫</div><div class="desc">Dulce sorpresa.</div></div>
+            <div class="gift-card"><div class="title">CANGREJOS 🦀</div><div class="desc">Pedido especial.</div></div>
+            <div class="gift-card"><div class="title">Dibujitos 🎨</div><div class="desc">Hechos con cariño.</div></div>
+            <div class="gift-card"><div class="title">Cartas ✉️</div><div class="desc">Mensajes bonitos.</div></div>
+            <div class="gift-card"><div class="title">Lirios 🌸</div><div class="desc">Flores favoritas.</div></div>
+            <div class="gift-card"><div class="title">Peluches 🧸</div><div class="desc">De lo que más le gusta.</div></div>
+          </div>
+          <div style="display:flex; gap:10px; justify-content:center; margin-top:8px;">
+            <button class="btn-pending" type="button">PENDIENTE DE ENTREGAR</button>
+            <button id="giftsNext" class="btn-next" type="button">SIGUIENTE</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Con cariño y alegría navideña • 2025
+  </footer>
+  <script>
+    (() => {
+      const container = document.querySelector('.snow');
+      const initial = 28;
+      const intervalMs = 380;
+      function spawn() {
+        const el = document.createElement('span');
+        el.className = 'snowflake';
+        el.textContent = '❄';
+        const size = 28 + Math.random() * 18; // copos más grandes (~28–46px)
+        el.style.setProperty('--size', `${size}px`);
+        el.style.left = `${Math.random() * 100}%`;
+        const duration = 6 + Math.random() * 6;
+        el.style.setProperty('--duration', `${duration}s`);
+        const sway = 4 + Math.random() * 6;
+        el.style.setProperty('--sway', `${sway}s`);
+        container.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+      }
+      for (let i = 0; i < initial; i++) spawn();
+      setInterval(spawn, intervalMs);
+    })();
+  </script>
+  <script>
+    // Al hacer click, reproducir 1225.mp4 en pantalla completa
+    (function(){
+      const btn = document.getElementById('play1225');
+      if (!btn) return;
+      function showCardHello(){
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay-card';
+        overlay.setAttribute('aria-hidden','false');
+        const panel = document.createElement('div');
+        panel.className = 'panel';
+        const img = document.createElement('img');
+        img.alt = 'Carta Hello';
+        img.src = 'fotos/carta-hello.jpg';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-next';
+        btn.textContent = 'Siguiente';
+        btn.addEventListener('click', () => {
+          const sec = document.getElementById('rompecabezas');
+          if (sec) {
+            overlay.remove();
+            sec.classList.add('active');
+            if (window.startPuzzle) window.startPuzzle();
+            sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+        panel.appendChild(img);
+        panel.appendChild(btn);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+      }
+      btn.addEventListener('click', function(ev){
+        ev.preventDefault();
+        const src = 'fotos/1225.mp4';
+        const v = document.createElement('video');
+        v.className = 'fs-video';
+        v.src = src;
+        v.controls = true;
+        v.autoplay = true;
+        v.playsInline = true;
+        document.body.appendChild(v);
+        const goFull = async () => {
+          try {
+            if (v.requestFullscreen) {
+              await v.requestFullscreen();
+            } else if (v.webkitRequestFullscreen) {
+              v.webkitRequestFullscreen();
+            }
+          } catch (_) {}
+        };
+        // Intentar entrar en fullscreen y reproducir
+        goFull();
+        v.play().catch(() => {});
+        v.addEventListener('error', () => {
+          alert('No se encontró el video "1225.mp4".');
+          v.remove();
+        });
+        v.addEventListener('ended', () => {
+          if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          }
+          showCardHello();
+          v.remove();
+        });
+      });
+    })();
+  </script>
+  <script>
+    // Lógica del rompecabezas (se inicia al mostrar la sección)
+    (function(){
+      const imgSrc = 'fotos/rompecabezas-hello.png';
+      const size = 3; // 3x3
+      const board = document.getElementById('puzzleBoard');
+      const statusEl = document.getElementById('puzzleStatus');
+      const shuffleBtn = document.getElementById('puzzleShuffle');
+      let initialized = false;
+
+      function bgPosFor(tile){
+        const x = tile % size;
+        const y = Math.floor(tile / size);
+        const px = (x / (size - 1)) * 100;
+        const py = (y / (size - 1)) * 100;
+        return `${px}% ${py}%`;
+      }
+
+      function updatePieceVisual(el){
+        const tile = Number(el.dataset.tile);
+        el.style.backgroundPosition = bgPosFor(tile);
+      }
+
+      function checkSolved(){
+        const pieces = Array.from(board.querySelectorAll('.piece'));
+        const ok = pieces.every((el, i) => Number(el.dataset.tile) === i);
+        statusEl.textContent = ok ? '¡Completado! 🎉' : '';
+        if (ok) {
+          const gifts = document.getElementById('giftArea');
+          if (gifts && !gifts.classList.contains('active')) {
+            alert('FELICIDADES te ganaste un regalo pendiente');
+            gifts.classList.add('active');
+          }
+        }
+        return ok;
+      }
+
+      function makePiece(pos, tile){
+        const el = document.createElement('div');
+        el.className = 'piece';
+        el.setAttribute('draggable', 'true');
+        el.dataset.pos = String(pos);
+        el.dataset.tile = String(tile);
+        updatePieceVisual(el);
+        el.addEventListener('dragstart', (ev)=>{
+          ev.dataTransfer.setData('text/plain', el.dataset.pos);
+        });
+        el.addEventListener('dragover', (ev)=>{ ev.preventDefault(); });
+        el.addEventListener('drop', (ev)=>{
+          ev.preventDefault();
+          const fromPos = ev.dataTransfer.getData('text/plain');
+          const src = board.querySelector(`.piece[data-pos="${fromPos}"]`);
+          const dst = el;
+          if (!src || !dst || src === dst) return;
+          const tA = src.dataset.tile;
+          src.dataset.tile = dst.dataset.tile;
+          dst.dataset.tile = tA;
+          updatePieceVisual(src);
+          updatePieceVisual(dst);
+          checkSolved();
+        });
+        return el;
+      }
+
+      function fisherYates(arr){
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function init(){
+        if (initialized) return;
+        initialized = true;
+        const img = new Image();
+        img.onload = () => {
+          // Ajustar la relación de aspecto del tablero a la de la imagen
+          board.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+          board.style.setProperty('--size', String(size));
+          board.innerHTML = '';
+          const total = size * size;
+          const tiles = fisherYates([...Array(total).keys()]);
+          for (let pos = 0; pos < total; pos++) {
+            const el = makePiece(pos, tiles[pos]);
+            board.appendChild(el);
+          }
+          statusEl.textContent = '';
+        };
+        img.src = imgSrc;
+      }
+
+      function reshuffle(){
+        const total = size * size;
+        const tiles = fisherYates([...Array(total).keys()]);
+        const pieces = Array.from(board.querySelectorAll('.piece'));
+        for (let i = 0; i < total; i++) {
+          pieces[i].dataset.tile = String(tiles[i]);
+          updatePieceVisual(pieces[i]);
+        }
+        statusEl.textContent = '';
+      }
+
+      if (shuffleBtn) shuffleBtn.addEventListener('click', reshuffle);
+      // Exponer startPuzzle para que el botón del overlay lo invoque
+      window.startPuzzle = init;
+    })();
+  </script>
+  <script>
+    // Al pulsar "SIGUIENTE" en regalos, mostrar overlay con imagen 10.jpg y espacio para frases
+    (function(){
+      const btn = document.getElementById('giftsNext');
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay-next';
+        const panel = document.createElement('div');
+        panel.className = 'panel';
+        const img = document.createElement('img');
+        img.src = 'fotos/10.jpg';
+        img.alt = 'Imagen especial';
+        const text = document.createElement('div');
+        text.className = 'text';
+        const title = document.createElement('h3');
+        title.textContent = 'Carta';
+        text.appendChild(title);
+        // Líneas de la carta para el efecto de escritura
+        const lines = [
+          'Mi Bricolito hermosa,',
+          'Hoy es Navidad, 25 de diciembre, y aunque no puedo tenerte frente a mí, abrazarte ni mirarte a los ojos, quiero que sepas algo con total certeza: tú eres el regalo más grande que esta Navidad me dio.',
+          'Gracias por existir, gracias por estar, gracias por acompañarme incluso en la distancia. Esta Navidad es especial porque la paso contigo, aunque sea con palabras, pensamientos y amor que cruza cualquier kilómetro. No necesito más para sentirme completo.',
+          'Quiero que sepas que ocupas un lugar muy importante en mi vida, tan real y tan profundo como el que ocupa mi familia, mis sueños y todo lo que amo. Tú eres parte de lo que soy, de lo que cuido y de lo que defiendo con el corazón.',
+          'Gracias por compartir una Navidad conmigo, por ser luz, ternura y refugio. Gracias por tu esencia, por tu niña interior, por tu fuerza silenciosa y por el amor que llevas dentro, incluso cuando dudas de ti.',
+          'Hoy solo deseo que tengas una Feliz Navidad, que tu corazón se sienta acompañado, protegido y amado. Yo estoy aquí, pensándote, eligiéndote y queriéndote, hoy y siempre.',
+          'Con todo mi amor,',
+          'con calma, con verdad y con el corazón en las manos,',
+          'Tu David ❤️'
+        ];
+        // Función de tipeo por línea y expansión progresiva del contenedor
+        function typeLine(container, textLine, speed = 28) {
+          return new Promise(resolve => {
+            const p = document.createElement('p');
+            container.appendChild(p);
+            let i = 0;
+            const timer = setInterval(() => {
+              p.textContent += textLine[i] ?? '';
+              i++;
+              container.style.maxHeight = container.scrollHeight + 'px';
+              if (i >= textLine.length) {
+                clearInterval(timer);
+                resolve();
+              }
+            }, speed);
+          });
+        }
+        async function typeAll(){
+          // iniciar con un tamaño mínimo para ver el crecimiento
+          text.style.maxHeight = '32px';
+          for (const ln of lines) {
+            await typeLine(text, ln, 28);
+            await new Promise(r => setTimeout(r, 320));
+          }
+        }
+        // Iniciar efecto de corazones al terminar
+        function startHearts(root){
+          const container = document.createElement('div');
+          container.className = 'hearts';
+          root.appendChild(container);
+          const initial = 26;
+          const intervalMs = 360;
+          let count = 0;
+          function spawn(){
+            const el = document.createElement('span');
+            el.className = 'heart';
+            const size = 20 + Math.random() * 22;
+            el.style.setProperty('--size', `${size}px`);
+            el.style.left = `${Math.random() * 100}%`;
+            const duration = 6 + Math.random() * 6;
+            el.style.setProperty('--duration', `${duration}s`);
+            const sway = 4 + Math.random() * 6;
+            el.style.setProperty('--sway', `${sway}s`);
+            container.appendChild(el);
+            el.addEventListener('animationend', () => el.remove());
+            count++;
+          }
+          for (let i = 0; i < initial; i++) spawn();
+          const timer = setInterval(spawn, intervalMs);
+          // detener después de unos segundos y limpiar
+          setTimeout(() => { clearInterval(timer); setTimeout(() => container.remove(), 8000); }, 9000);
+        }
+        typeAll().then(() => startHearts(overlay));
+        panel.appendChild(img);
+        panel.appendChild(text);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+      });
+    })();
+  </script>
+</body>
+</html>
