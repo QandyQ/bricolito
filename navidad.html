@@ -269,7 +269,14 @@ mi amor, mi tiempo y mi elección de estar contigo. 🎄❤️
         el.addEventListener('animationend', () => el.remove());
       }
       for (let i = 0; i < initial; i++) spawn();
-      setInterval(spawn, intervalMs);
+      window.snowTimer = setInterval(spawn, intervalMs);
+      window.stopSnow = () => {
+        try {
+          if (window.snowTimer) { clearInterval(window.snowTimer); window.snowTimer = null; }
+        } catch(_) {}
+        container.innerHTML = '';
+        container.style.display = 'none';
+      };
     })();
   </script>
   <script>
@@ -526,11 +533,9 @@ mi amor, mi tiempo y mi elección de estar contigo. 🎄❤️
             count++;
           }
           for (let i = 0; i < initial; i++) spawn();
-          const timer = setInterval(spawn, intervalMs);
-          // detener después de unos segundos y limpiar
-          setTimeout(() => { clearInterval(timer); setTimeout(() => container.remove(), 8000); }, 9000);
+          setInterval(spawn, intervalMs);
         }
-        typeAll().then(() => startHearts(overlay));
+        typeAll().then(() => { if (window.stopSnow) window.stopSnow(); startHearts(overlay); });
         panel.appendChild(img);
         panel.appendChild(text);
         overlay.appendChild(panel);
