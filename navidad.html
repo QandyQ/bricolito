@@ -203,6 +203,9 @@
   </header>
   <div class="snow" aria-hidden="true"></div>
 
+  <!-- Música de fondo: se intentará reproducir al llegar a la página -->
+  <audio id="bgMusic" src="fotos/musica-primera-parte.mp3" preload="auto" loop></audio>
+
   <main>
     <section class="hero" aria-labelledby="titulo-navidad">
       <h1 id="titulo-navidad">¡Feliz Navidad! ✨</h1>
@@ -250,34 +253,22 @@ mi amor, mi tiempo y mi elección de estar contigo. 🎄❤️
     Con cariño y alegría navideña • 2025
   </footer>
   <script>
-    (() => {
-      const container = document.querySelector('.snow');
-      const initial = 28;
-      const intervalMs = 380;
-      function spawn() {
-        const el = document.createElement('span');
-        el.className = 'snowflake';
-        el.textContent = '❄';
-        const size = 28 + Math.random() * 18; // copos más grandes (~28–46px)
-        el.style.setProperty('--size', `${size}px`);
-        el.style.left = `${Math.random() * 100}%`;
-        const duration = 6 + Math.random() * 6;
-        el.style.setProperty('--duration', `${duration}s`);
-        const sway = 4 + Math.random() * 6;
-        el.style.setProperty('--sway', `${sway}s`);
-        container.appendChild(el);
-        el.addEventListener('animationend', () => el.remove());
-      }
-      for (let i = 0; i < initial; i++) spawn();
-      window.snowTimer = setInterval(spawn, intervalMs);
-      window.stopSnow = () => {
-        try {
-          if (window.snowTimer) { clearInterval(window.snowTimer); window.snowTimer = null; }
-        } catch(_) {}
-        container.innerHTML = '';
-        container.style.display = 'none';
-      };
+    // Intentar reproducir música al llegar a la página, con fallback a primer interacción
+    (function(){
+      const audio = document.getElementById('bgMusic');
+      if (!audio) return;
+      audio.volume = 0.6;
+      const tryPlay = () => { audio.play().catch(()=>{}); };
+      // Intento inmediato (a veces permitido por el clic que te trajo aquí)
+      tryPlay();
+      // Garantizar reproducción al primer gesto del usuario
+      const onInteract = () => { audio.muted = false; tryPlay(); window.removeEventListener('pointerdown', onInteract); document.removeEventListener('keydown', onInteract); };
+      window.addEventListener('pointerdown', onInteract, { once: true });
+      document.addEventListener('keydown', onInteract, { once: true });
+      audio.addEventListener('error', () => { alert('No se encontró "fotos/musica-primera-parte.mp3". Verifica la ruta o el nombre del archivo.'); });
     })();
+  </script>
+    
   </script>
   <script>
     // Al hacer click, reproducir 1225.mp4 en pantalla completa
