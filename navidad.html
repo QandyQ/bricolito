@@ -267,8 +267,36 @@ mi amor, mi tiempo y mi elección de estar contigo. 🎄❤️
       document.addEventListener('keydown', onInteract, { once: true });
       audio.addEventListener('error', () => { alert('No se encontró "fotos/musica-primera-parte.mp3". Verifica la ruta o el nombre del archivo.'); });
     })();
+    (() => {
+      const container = document.querySelector('.snow');
+      const initial = 28;
+      const intervalMs = 380;
+      function spawn() {
+        const el = document.createElement('span');
+        el.className = 'snowflake';
+        el.textContent = '❄';
+        const size = 28 + Math.random() * 18; // copos más grandes (~28–46px)
+        el.style.setProperty('--size', `${size}px`);
+        el.style.left = `${Math.random() * 100}%`;
+        const duration = 6 + Math.random() * 6;
+        el.style.setProperty('--duration', `${duration}s`);
+        const sway = 4 + Math.random() * 6;
+        el.style.setProperty('--sway', `${sway}s`);
+        container.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+      }
+      for (let i = 0; i < initial; i++) spawn();
+      window.snowTimer = setInterval(spawn, intervalMs);
+      window.stopSnow = () => {
+        try {
+          if (window.snowTimer) { clearInterval(window.snowTimer); window.snowTimer = null; }
+        } catch(_) {}
+        container.innerHTML = '';
+        container.style.display = 'none';
+      };
+    })();
   </script>
-    
+   
   </script>
   <script>
     // Al hacer click, reproducir 1225.mp4 en pantalla completa
