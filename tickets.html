@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tickets - Toma lo que necesites</title>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffc4d6;
+      --paper: #fffaf2;
+      --ink: #222;
+      --tape: #b9c8ff;
+      --dash: #000;
+      --shadow: 0 8px 24px rgba(0,0,0,.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 12px, transparent 13px) 0 0/60px 60px,
+        var(--bg);
+      font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 40px;
+    }
+    .board {
+      position: relative;
+      width: min(720px, 92vw);
+      background: var(--paper);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 32px 32px 16px;
+    }
+    .tape {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 34px;
+      background:
+        linear-gradient(transparent 12px, rgba(0,0,0,0.05) 12px, rgba(0,0,0,0.05) 22px, transparent 22px),
+        var(--tape);
+      clip-path: polygon(2% 0, 98% 0, 98% 100%, 2% 100%);
+      opacity: .85;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,.15));
+    }
+    .h1 {
+      font-family: "Patrick Hand", cursive;
+      font-size: clamp(32px, 5.6vw, 52px);
+      color: var(--ink);
+      text-align: center;
+      margin: 0 0 16px;
+    }
+    .cut-line { border-top: 3px dashed var(--dash); margin: 8px -8px 0; }
+
+    .tickets {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0;
+      padding-top: 14px;
+    }
+    .ticket {
+      border-right: 3px dashed var(--dash);
+      padding: 8px 0;
+      display: grid;
+      place-items: center;
+      cursor: grab;
+      transition: transform .2s ease, filter .2s ease;
+    }
+    .ticket:first-child { border-left: 3px dashed var(--dash); }
+    .ticket:hover { transform: translateY(-2px); filter: drop-shadow(0 4px 10px rgba(0,0,0,.12)); }
+    .ticket p {
+      margin: 0;
+      font-weight: 700;
+      font-size: clamp(14px, 2.2vw, 18px);
+      line-height: 1;
+      text-align: center;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    button {
+      border: none;
+      border-radius: 20px;
+      padding: 10px 16px;
+      font-weight: 700;
+      background: #222;
+      color: #fff;
+      cursor: pointer;
+    }
+    button.secondary { background: #fff; color: #222; border: 2px solid #222; }
+
+    @keyframes tear {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      50% { transform: translateY(30px) rotate(-6deg); }
+      100% { transform: translateY(70px) rotate(-10deg); opacity: 0; }
+    }
+    .ticket.torn { animation: tear .55s ease forwards; }
+
+    .note { text-align: center; color: #555; font-size: 14px; margin-top: 6px; }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .board { box-shadow: none; }
+      .actions, .note { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="board" aria-label="Cartel de tickets">
+    <div class="tape" aria-hidden="true"></div>
+    <h1 class="h1">¡Toma lo que necesites hoy!</h1>
+    <div class="cut-line" aria-hidden="true"></div>
+
+    <section class="tickets" id="tickets">
+      <div class="ticket"><p>Un respiro</p></div>
+      <div class="ticket"><p>Reírte mucho</p></div>
+      <div class="ticket"><p>Un abrazo</p></div>
+      <div class="ticket"><p>Salir a caminar</p></div>
+      <div class="ticket"><p>Tomar el sol</p></div>
+      <div class="ticket"><p>Un snack rico</p></div>
+      <div class="ticket"><p>Tiempo libre</p></div>
+    </section>
+
+    <div class="actions">
+      <button id="print">Imprimir</button>
+      <button class="secondary" id="restore">Reponer tickets</button>
+    </div>
+    <p class="note">Haz clic en un ticket para "arrancarlo".</p>
+  </main>
+
+  <script>
+    const container = document.getElementById('tickets');
+    container.addEventListener('click', (e) => {
+      const t = e.target.closest('.ticket');
+      if (!t) return;
+      t.classList.add('torn');
+      t.addEventListener('animationend', () => t.remove(), { once: true });
+    });
+    document.getElementById('print').addEventListener('click', () => window.print());
+    document.getElementById('restore').addEventListener('click', () => {
+      const labels = [
+        "Un respiro",
+        "Reírte mucho",
+        "Un abrazo",
+        "Salir a caminar",
+        "Tomar el sol",
+        "Un snack rico",
+        "Tiempo libre"
+      ];
+      container.innerHTML = labels.map(text => `<div class="ticket"><p>${text}</p></div>`).join('');
+    });
+  </script>
+</body>
+</html>
