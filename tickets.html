@@ -63,6 +63,20 @@
       gap: 0;
       padding-top: 14px;
     }
+    .tickets.disabled { opacity: .85; }
+    .tickets.disabled .ticket { cursor: not-allowed; filter: grayscale(0.1); }
+    .notice {
+      display: none;
+      text-align: center;
+      color: #a33;
+      background: #fff3f3;
+      border: 1px solid #f3c2c2;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      box-shadow: var(--shadow);
+    }
+    .notice.show { display: block; }
     .ticket {
       border-right: 3px dashed var(--dash);
       padding: 8px 0;
@@ -137,13 +151,100 @@
       <button class="secondary" id="restore">Reponer tickets</button>
     </div>
     <p class="note">Haz clic en un ticket para "arrancarlo".</p>
+    <div id="ticketNotice" class="notice" aria-live="polite" role="alert"></div>
   </main>
+  <!-- GIFs fijos en esquinas inferiores -->
+  <style>
+    .corner-gifs img { position: fixed; z-index: 9998; pointer-events: none; height: auto; width: clamp(64px, 14vw, 160px); filter: drop-shadow(0 6px 12px rgba(0,0,0,.35)); }
+    .corner-gifs .bottom-left { left: 10px; bottom: 10px; }
+    .corner-gifs .bottom-right { right: 10px; bottom: 10px; }
+    .corner-gifs .bottom-center { left: 50%; transform: translateX(-50%); bottom: 10px; width: clamp(64px, 12vw, 140px); }
+    .corner-gifs .top-right { right: 10px; top: 10px; width: clamp(120px, 18vw, 240px); }
+  </style>
+  <div class="corner-gifs" aria-hidden="true">
+    <img class="bottom-left" src="heloo.gif" alt="Kitty" />
+    <img class="bottom-right" src="gato-3.gif" alt="Gato" />
+    <img class="bottom-center" src="gif-gato-2.gif" alt="Gato 2" />
+     <img class="top-right" src="gif-arbol.gif" alt="Árbol" />
+  </div>
+  <!-- Reproductor oculto para tickets -->
+  <audio id="ticketAudio" preload="auto"></audio>
+  <!-- Música de fondo (loop) -->
+  <audio id="bgMusic" src="musica-tickets.mp3" preload="auto" loop></audio>
 
   <script>
     const container = document.getElementById('tickets');
+    const player = document.getElementById('ticketAudio');
+    const bg = document.getElementById('bgMusic');
+    const notice = document.getElementById('ticketNotice');
+          // Utilidad: mostrar notificación temporal
+          function showNotice(msg){
+            if (!notice) return;
+            notice.textContent = msg;
+            notice.classList.add('show');
+            clearTimeout(window._ticketNoticeTimer);
+            window._ticketNoticeTimer = setTimeout(() => {
+              notice.classList.remove('show');
+            }, 2200);
+          }
+    // Mapeo de texto del ticket -> archivo de audio
+    const audioMap = {
+      "Un respiro": "respiro.mp3",
+      "Reírte mucho": "risas.mp3",
+      "Un abrazo": "abrazo.mp3",
+      "Salir a caminar": "salir-a-caminar.mp3",
+      "Tomar el sol": "tomar-sol.mp3",
+      "Un snack rico": "snack.mp3",
+      "Tiempo libre": "tiempo-libre.mp3"
+    };
+      // Bloqueo: no permitir seleccionar otro cupón mientras suena audio
+      let isLocked = false;
+      if (player) {
+        player.addEventListener('play', () => {
+          isLocked = true; container.classList.add('disabled');
+          try { if (bg) bg.pause(); } catch(_){}
+        });
+        player.addEventListener('ended', () => {
+          isLocked = false; container.classList.remove('disabled');
+          try { if (bg) bg.play().catch(()=>{}); } catch(_){}
+        });
+        player.addEventListener('pause', () => {
+          isLocked = false; container.classList.remove('disabled');
+          try { if (bg) bg.play().catch(()=>{}); } catch(_){}
+        });
+        player.addEventListener('error', () => {
+          isLocked = false; container.classList.remove('disabled');
+          try { if (bg) bg.play().catch(()=>{}); } catch(_){}
+        });
+      }
+      // Intentar reproducir la música de fondo con políticas de autoplay
+      (function(){
+        if (!bg) return;
+        bg.volume = 0.35;
+        const tryPlay = () => { bg.play().catch(()=>{}); };
+        // intento inmediato (a veces permitido)
+        tryPlay();
+        const onInteract = () => { bg.muted = false; tryPlay(); window.removeEventListener('pointerdown', onInteract); document.removeEventListener('keydown', onInteract); };
+        window.addEventListener('pointerdown', onInteract, { once: true });
+        document.addEventListener('keydown', onInteract, { once: true });
+        bg.addEventListener('error', () => { alert('No se encontró la música de fondo en fotos/musica-primera-parte.mp3'); });
+      })();
     container.addEventListener('click', (e) => {
       const t = e.target.closest('.ticket');
       if (!t) return;
+      if (isLocked) { showNotice('Espera a que termine el audio'); return; }
+      if (isLocked) return; // impedir selección mientras suena audio
+      // Reproducir el audio correspondiente al ticket seleccionado
+      try {
+        const label = (t.querySelector('p')?.textContent || '').trim();
+        const src = audioMap[label];
+          if (src && player) {
+            player.volume = 0.7;
+            player.src = src;
+            player.currentTime = 0;
+            player.play().catch(()=>{ /* si falla, desbloquear */ isLocked = false; container.classList.remove('disabled'); });
+          }
+      } catch(_){ /* noop */ }
       t.classList.add('torn');
       t.addEventListener('animationend', () => t.remove(), { once: true });
     });
