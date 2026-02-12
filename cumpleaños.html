@@ -410,12 +410,17 @@
             height: 300px;
             z-index: 0;
             pointer-events: none;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6)) 
+                    drop-shadow(0 0 20px rgba(220, 0, 0, 0.4))
+                    drop-shadow(0 0 30px rgba(255, 100, 100, 0.3));
+            animation: cornerGlow 2s ease-in-out infinite;
         }
 
         .corner-gif img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            filter: brightness(1.15);
         }
 
         .corner-gif.bottom-left {
@@ -426,6 +431,20 @@
         .corner-gif.bottom-right {
             bottom: 20px;
             right: 20px;
+        }
+
+        /* Animación de brillo para esquinas */
+        @keyframes cornerGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6)) 
+                        drop-shadow(0 0 20px rgba(220, 0, 0, 0.4))
+                        drop-shadow(0 0 30px rgba(255, 100, 100, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8)) 
+                        drop-shadow(0 0 25px rgba(220, 0, 0, 0.6))
+                        drop-shadow(0 0 40px rgba(255, 100, 100, 0.5));
+            }
         }
 
         /* Gif de confeti al abrir la carta */
@@ -454,19 +473,23 @@
         /* Gifs que suben como globos */
         .balloon-gif {
             position: fixed;
-            width: 120px;
-            height: 12  0px;
+            width: 200px;
+            height: 200px;
             z-index: 100;
             pointer-events: none;
             bottom: -250px;
             opacity: 0;
             transition: opacity 1s ease-in;
+            filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.8)) 
+                    drop-shadow(0 0 20px rgba(255, 100, 0, 0.6))
+                    drop-shadow(0 0 30px rgba(255, 200, 100, 0.4));
         }
 
         .balloon-gif img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            filter: brightness(1.2);
         }
 
         .balloon-gif.left {
@@ -487,13 +510,28 @@
                 opacity: 1;
             }
             100% {
-                bottom: calc(100vh - 100px);
+                bottom: calc(100vh - 200px);
                 opacity: 1;
             }
         }
 
+        /* Animación de brillo */
+        @keyframes glowPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.8)) 
+                        drop-shadow(0 0 20px rgba(255, 100, 0, 0.6))
+                        drop-shadow(0 0 30px rgba(255, 200, 100, 0.4));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(255, 165, 0, 1)) 
+                        drop-shadow(0 0 25px rgba(255, 100, 0, 0.8))
+                        drop-shadow(0 0 40px rgba(255, 200, 100, 0.6));
+            }
+        }
+
         .balloon-gif.rising {
-            animation: floatUp 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: floatUp 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+                       glowPulse 2s ease-in-out infinite;
         }
     </style>
 </head>
@@ -512,6 +550,9 @@
     </audio>
     <audio id="birthdayLoopAudio" preload="auto" loop>
         <source src="cumpleaños-hello/feliz.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="confettiAudio" preload="auto">
+        <source src="cumpleaños-hello/confeti.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Gifs que suben como globos -->
@@ -739,6 +780,7 @@
         const birthdayAudio = document.getElementById('birthdayAudio');
         const musicAudio = document.getElementById('musicAudio');
         const birthdayLoopAudio = document.getElementById('birthdayLoopAudio');
+        const confettiAudio = document.getElementById('confettiAudio');
 
         function playMusicSequence() {
             // Detener cualquier reproducción previa
@@ -775,6 +817,10 @@
                 // Verificar scroll después de la animación
                 setTimeout(checkScrollButtons, 1800);
                 
+                // Reproducir sonido de confeti
+                confettiAudio.currentTime = 0;
+                confettiAudio.play().catch(err => console.log('No se pudo reproducir confeti:', err));
+                
                 // Reproducir secuencia de música
                 playMusicSequence();
                 
@@ -803,6 +849,8 @@
             cardWrapper.classList.remove('opened');
             
             // Detener todas las pistas de audio
+            confettiAudio.pause();
+            confettiAudio.currentTime = 0;
             birthdayAudio.pause();
             birthdayAudio.currentTime = 0;
             musicAudio.pause();
