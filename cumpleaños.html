@@ -503,6 +503,11 @@
         <img src="cumpleaños-hello/confeti2.gif" alt="Confeti">
     </div>
 
+    <!-- Audio para la música de cumpleaños -->
+    <audio id="birthdayAudio" preload="auto">
+        <source src="cumpleaños-hello/feliz.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Gifs que suben como globos -->
     <div class="balloon-gif left" id="balloonLeft">
         <img src="cumpleaños-hello/cc3.gif" alt="Globo">
@@ -725,6 +730,7 @@
         const confettiGif = document.getElementById('confettiGif');
         const balloonLeft = document.getElementById('balloonLeft');
         const balloonRight = document.getElementById('balloonRight');
+        const birthdayAudio = document.getElementById('birthdayAudio');
 
         function openCard() {
             const cardWrapper = document.getElementById('cardWrapper');
@@ -732,6 +738,10 @@
                 cardWrapper.classList.add('opened');
                 // Verificar scroll después de la animación
                 setTimeout(checkScrollButtons, 1800);
+                
+                // Reproducir música
+                birthdayAudio.currentTime = 0;
+                birthdayAudio.play().catch(err => console.log('No se pudo reproducir el audio:', err));
                 
                 // Mostrar confeti
                 confettiGif.classList.add('show');
