@@ -510,12 +510,30 @@ mmm
     <script src="script_v2.js"></script>
     <script src="carrusel.js"></script>
     <script>
+      // Verificar permiso y obtener CSRF token para acciones POST
       fetch('https://bricolito.netlify.app/puede-ver')
   .then(res => res.json())
   .then(data => {
     if (!data.permitido) {
       window.location.href = "anterior.html";
     }
+    // Solicitar CSRF token tras validar permiso
+    return fetch('https://bricolito.netlify.app/csrf-token', {
+      method: 'GET',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    });
+  })
+  .then(res => {
+    if (!res) return null; // en caso de redirección previa
+    if (!res.ok) throw new Error('csrf_fail');
+    return res.json();
+  })
+  .then(csrf => {
+    if (csrf && csrf.token) {
+      window.csrfToken = csrf.token;
+    }
+  })
+  .catch(() => { /* si falla, el POST finalizará con 403 (esperado) */ });
   });
 const track = document.querySelector('.carrusel-track');
 const cartas = document.querySelectorAll('.carrusel-track .contenedor');
@@ -530,7 +548,15 @@ function mostrarCarta(idx) {
     const offset = (cartaWidth * idx) - ((track.offsetWidth - cartaWidth) / 2);
     track.style.transform = `translateX(${-offset}px)`;
     if (idx === cartas.length - 1) {
-    fetch('https://bricolito.netlify.app/terminar', { method: 'POST' });
+    fetch('https://bricolito.netlify.app/terminar', {
+      method: 'POST',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': (window.csrfToken || ''),
+        'Content-Type': 'application/json'
+      },
+      body: '{}'
+    }).catch(() => {});
 }
 }
 document.getElementById('prev-carta').onclick = () => {

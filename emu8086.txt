@@ -1,0 +1,84 @@
+; Emu8086 (8086 DOS) - MUL de 8 bits (sin signo)
+.model small
+.stack 100h
+.data
+	msg db 'AL * BL = AX (unsigned)$'
+.code
+
+main PROC
+	; Inicializar segmento de datos (formato .EXE DOS)
+	mov ax, @data
+	mov ds, ax
+
+	; Ejemplo: 12 * 10 = 120 (0x0078)
+	mov al, 12      ; multiplicando (8 bits) en AL
+	mov bl, 10      ; multiplicador (8 bits) en BL
+	mul bl          ; AX = AL * BL (sin signo). Resultado 16 bits: AH:AL
+
+	; Opcional: mostrar un texto fijo para indicar dónde quedó el resultado
+	; (no imprime el valor, solo la nota). El valor está en AX.
+	mov dx, offset msg
+	mov ah, 9
+	int 21h
+
+	; Salir a DOS
+	mov ax, 4C00h
+	int 21h
+
+main ENDP
+END main
+
+
+
+en subconuunto se debe representar por ejemplo un numero grande como 80 000
+DX y AX
+
+//IMPLICITO, EXPLICITO
+;---DIVISION
+    ; DIVISION EXACTA DE 8 BITS 
+    ; 100/5
+    
+    ; DIVIDENDO USA AX
+    
+    ;MOV AX, 100D
+    ;MOV BL, 5D
+    
+    ;DIV BL
+    
+    
+      
+;EJEMPLO DIVISON NO EXACTA
+    ;MOV AX, 20D
+    ;MOV CH, 3D
+    
+    ;DIV CH
+    
+    ;MOV AX, 1000D
+    ;MOV BX, 2D
+    
+    ;DIV BX  
+    
+    ;EN ESTE CASO FUNCIONO LA DIVISION PORQUE
+    ; DX ESTABA VACIO
+    ;UNA BUENA PRACTICA ANTES DE HACER UNA 
+    ;DIVISON DE 8 BITS, SE VACIA LA PARTE ALTA
+    ; DE DC ME ASEGURO QUE ESTA VACIA
+    
+     
+
+MOV DX, 0D
+    MOV AX, 1000D
+    MOV BX, 2D
+    
+    DIV BX   
+    
+    
+    ; CON RESIDUO
+    
+    MOV DX, 0D
+    MOV AX, 1000D
+    MOV CX, 3D
+    
+    DIV CX 
+    
+     

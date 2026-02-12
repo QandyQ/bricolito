@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños! 🎂</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('cumpleaños-hello/cc2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
+            overflow: hidden;
+        }
+
+        /* Confeti de fondo */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle, #ff6b6b 4px, transparent 4px),
+                radial-gradient(circle, #4ecdc4 4px, transparent 4px),
+                radial-gradient(circle, #ffe66d 4px, transparent 4px),
+                radial-gradient(circle, #ff6b9d 4px, transparent 4px);
+            background-size: 50px 50px, 80px 80px, 60px 60px, 90px 90px;
+            background-position: 0 0, 20px 20px, 40px 40px, 60px 60px;
+            opacity: 0.3;
+            animation: float 8s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Contenedor de la tarjeta plegada */
+        .card-wrapper {
+            width: 500px;
+            height: 600px;
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .card-wrapper:hover:not(.opened) {
+            transform: scale(1.02);
+        }
+
+        /* Contenedor de la tarjeta */
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* Parte trasera (base fija) */
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 10px;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            overflow-y: scroll;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE y Edge */
+        }
+
+        /* Ocultar scrollbar en Chrome, Safari y Opera */
+        .card-back::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Líneas de papel */
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 39px,
+                rgba(255, 255, 255, 0.3) 39px,
+                rgba(255, 255, 255, 0.3) 40px
+            );
+            pointer-events: none;
+            border-radius: 10px;
+        }
+
+        .card-back-content {
+            position: relative;
+            z-index: 1;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .card-back h2 {
+            color: #d63031;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .card-back p {
+            color: #2d3436;
+            line-height: 1.8;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: justify;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .card-back .signature {
+            margin-top: 40px;
+            text-align: right;
+            font-style: italic;
+            color: #636e72;
+            font-size: 1.4rem;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .card-back .decorative {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 25px 0;
+        }
+
+        /* Estilo para el poema destacado */
+        .card-back .poem {
+            color: #e74c3c;
+            font-style: italic;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 20px;
+            border-left: 4px solid #e74c3c;
+            margin: 25px 0;
+            font-size: 1.15rem;
+            line-height: 1.9;
+        }
+
+        .card-back .poem-author {
+            text-align: right;
+            margin-top: 10px;
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        /* Estilo para imágenes dentro de la carta */
+        .card-back img.photo {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 15px;
+            margin: 25px auto;
+            display: block;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* Parte frontal (hoja que se dobla) */
+        .card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('cumpleaños-hello/cc1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 10px;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: visible;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.4),
+                inset -3px 0 8px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            z-index: 2;
+        }
+
+        /* Efecto de doblez del papel */
+        .card-front::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 100%);
+            border-radius: 10px 0 0 10px;
+            pointer-events: none;
+        }
+
+        /* Estado abierto */
+        .card-wrapper.opened .card-front {
+            transform: rotateY(-175deg);
+            box-shadow: 
+                -5px 15px 40px rgba(0, 0, 0, 0.3),
+                inset 3px 0 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Contenido de la portada */
+        .card-front-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-front-content h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 
+                3px 3px 6px rgba(0, 0, 0, 0.5),
+                -1px -1px 2px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.3);
+            margin: 0;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Sombra realista del doblez */
+        .fold-shadow {
+            position: fixed;
+            width: 500px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(90deg,
+                rgba(0, 0, 0, 0.3) 0%,
+                transparent 5%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .card-wrapper.opened .fold-shadow {
+            opacity: 1;
+        }
+
+        /* Botón para cerrar */
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #d63031;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+            font-weight: bold;
+        }
+
+        .card-wrapper.opened .close-button {
+            display: flex;
+        }
+
+        .close-button:hover {
+            background: #c0392b;
+            transform: rotate(90deg) scale(1.15);
+        }
+
+        /* Instrucción */
+        .instruction {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: pulse 2s infinite;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.7; transform: translateX(-50%) scale(1.05); }
+        }
+
+        .card-wrapper.opened .instruction {
+            display: none;
+        }
+
+        /* Textura de papel */
+        .paper-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px);
+            pointer-events: none;
+            border-radius: 10px;
+        }
+
+        /* Botones de scroll con flechas */
+        .scroll-button {
+            position: absolute;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: rgba(214, 48, 49, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .scroll-button:hover {
+            background: rgba(192, 57, 43, 0.95);
+            transform: scale(1.15);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        }
+
+        .scroll-button:active {
+            transform: scale(1.05);
+        }
+
+        .scroll-up {
+            top: 75px;
+        }
+
+        .scroll-down {
+            bottom: 15px;
+        }
+
+        .card-wrapper.opened .scroll-button {
+            display: flex;
+        }
+
+        /* Ocultar botones cuando no son necesarios */
+        .scroll-button.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Gifs decorativos en las esquinas */
+        .corner-gif {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .corner-gif img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .corner-gif.bottom-left {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .corner-gif.bottom-right {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        /* Gif de confeti al abrir la carta */
+        .confetti-gif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 2s ease-out;
+        }
+
+        .confetti-gif img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .confetti-gif.show {
+            opacity: 1;
+        }
+
+        /* Gifs que suben como globos */
+        .balloon-gif {
+            position: fixed;
+            width: 120px;
+            height: 12  0px;
+            z-index: 100;
+            pointer-events: none;
+            bottom: -250px;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        .balloon-gif img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .balloon-gif.left {
+            left: 10%;
+        }
+
+        .balloon-gif.right {
+            right: 10%;
+        }
+
+        /* Animación de subida */
+        @keyframes floatUp {
+            0% {
+                bottom: -250px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                bottom: calc(100vh - 100px);
+                opacity: 1;
+            }
+        }
+
+        .balloon-gif.rising {
+            animation: floatUp 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Gif de confeti -->
+    <div class="confetti-gif" id="confettiGif">
+        <img src="cumpleaños-hello/confeti2.gif" alt="Confeti">
+    </div>
+
+    <!-- Gifs que suben como globos -->
+    <div class="balloon-gif left" id="balloonLeft">
+        <img src="cumpleaños-hello/cc3.gif" alt="Globo">
+    </div>
+    <div class="balloon-gif right" id="balloonRight">
+        <img src="cumpleaños-hello/cc4.gif" alt="Globo">
+    </div>
+
+    <!-- Gifs decorativos en las esquinas -->
+    <div class="corner-gif bottom-left">
+        <img src="cumpleaños-hello/cc5.gif" alt="Decoración">
+    </div>
+    <div class="corner-gif bottom-right">
+        <img src="cumpleaños-hello/cc5.gif" alt="Decoración">
+    </div>
+
+    <div class="container">
+        <div class="card-wrapper" id="cardWrapper" onclick="openCard()">
+            <div class="card">
+                <!-- Parte trasera (contenido interno) -->
+                <div class="card-back">
+                    <div class="fold-shadow"></div>
+                    <div class="paper-texture"></div>
+                    <div class="card-back-content">
+                        <h2>🎉 ¡Feliz Cumpleaños Bricolito! 🎉</h2>
+                        
+                        <div class="decorative">🎂 🎈 🎁</div>
+                        
+                        <div class="poem">
+                            "Dos rojas lenguas de fuego<br>
+                            que a un mismo tronco enlazadas<br>
+                            se aproximan, y al besarse<br>
+                            forman una sola llama."<br>
+                            <div class="poem-author">— Gustavo Adolfo Bécquer</div>
+                        </div>
+                        
+                        <p>
+                            Esa llama que describió Bécquer…<br>
+                            yo la veo en ti.
+                        </p>
+                        
+                        <p>
+                            La veo en el día en que naciste,<br>
+                            en la línea exacta del tiempo donde comenzó todo,<br>
+                            donde el mundo aprendió lo que era una sonrisa capaz de crear cielos.
+                        </p>
+                        
+                        <p>
+                            Hoy no es un simple día.<br>
+                            Hoy es la fecha en que empezó a correr tu reloj biológico,<br>
+                            el segundo exacto en que tu existencia decidió quedarse en este mundo…<br>
+                            y gracias a Diosito también en el mío.
+                        </p>
+                        
+                        <p>
+                            Dos líneas separadas que aprendieron a unirse.<br>
+                            Dos tiempos distintos que ahora laten juntos.
+                        </p>
+                        
+                        <p>
+                            Hoy es bonito.<br>
+                            Bonito porque estás tú en él.<br>
+                            Bonito porque el sol —aunque me dé celos— puede tocarte y darte calor.<br>
+                            Bonito porque Copito y los gatitos tienen el privilegio de sentirte cerca.<br>
+                            Bonito porque tus seres queridos, los que están y los que no están,<br>
+                            tuvieron la fortuna de coincidir contigo.<br>
+                            Bonito porque te tengo.
+                        </p>
+                        
+                        <p>
+                            Bonito porque eres tú.
+                        </p>
+                        
+                        <p>
+                            Y en medio de todo esto…<br>
+                            me quedo quieto...
+                        </p>
+                        
+                        <p>
+                            Porque hay una imagen que siempre la veo...
+                        </p>
+                        
+                        <img src="cumpleaños-hello/foto.jpeg" alt="Mi Bricolito" class="photo">
+                        
+                        <p>
+                            Dos años.
+                        </p>
+                        
+                        <p>
+                            Un pastel más grande que tus manos.<br>
+                            Una vela prendida y tus ojos viéndola fijo.<br>
+                            Todavía no sabías pedir deseos,<br>
+                            pero igual te emocionabas.
+                        </p>
+                        
+                        <p>
+                            En la foto estás bien seria,<br>
+                            como si soplar fuera algo importante.<br>
+                            Y sí… para ti lo era.
+                        </p>
+                        
+                        <p>
+                            Eras chiquitita.<br>
+                            Cachetoncita.<br>
+                            Con esa carita que da ganas de cuidar.
+                        </p>
+                        
+                        <p>
+                            A veces veo esa foto y pienso:<br>
+                            no era solo una vela.<br>
+                            Era el comienzo de un montón de cosas.
+                        </p>
+                        
+                        <p>
+                            Era el inicio del tiempo que hoy celebro.<br>
+                            El inicio de la mujer que ahora admiro.<br>
+                            El inicio de la historia que un día iba a cruzarse con la mía.
+                        </p>
+                        <img src="cumpleaños-hello/foto2.jpeg" alt="Mi Bricolito" class="photo">
+                        <p>
+                            Porque mírate ahora...<br>
+                            Ya no eres esa niña,<br>
+                            pero sigues teniendo algo de ella:<br>
+                            la misma luz,<br>
+                            la misma forma de llegarle a la gente.
+                        </p>
+                        
+                        <p>
+                            Has pasado cosas.<br>
+                            Has aprendido.<br>
+                            Te has levantado.
+                        </p>
+                        
+                        <p>
+                            Y eso vale muchísimo.
+                        </p>
+                        
+                        <p>
+                            Tu esfuerzo diario.<br>
+                            Tu cabezita que resiste incluso cuando hay dolores o malestares.<br>
+                            Tu fuerza callada.<br>
+                            Tu manera de seguir, aunque nadie vea todo lo que cargas.
+                        </p>
+                        
+                        <p>
+                            Ojalá pudiera entrar en esa foto<br>
+                            y decirte bajito:
+                        </p>
+                        
+                        <p>
+                            "Todo va a estar bien.<br>
+                            Vas a crecer bonito.<br>
+                            Vas a ser fuerte.<br>
+                            Y vas a ser muy querida."
+                        </p>
+                        
+                        <p>
+                            No puedo volver,<br>
+                            pero sí puedo decirlo hoy.
+                        </p>
+                        
+                        <p>
+                            Desde aquí,<br>
+                            tu David —el del presente y el del futuro—<br>
+                            te desea un cumpleaños lleno de luz.
+                        </p>
+                        
+                        <p>
+                            Mi amor.<br>
+                            Mi niña chiquita.<br>
+                            Te mando un beso donde más te guste,<br>
+                            en cada átomo de tu existencia.
+                        </p>
+                        
+                        <p>
+                            Que este nuevo año nunca nos quite nuestras risas,<br>
+                            nuestras cosas que son solo nuestras,<br>
+                            nuestro idioma secreto,<br>
+                            nuestro fuego.
+                        </p>
+                        
+                        <div class="decorative">✨ 🌟 ⭐</div>
+                        
+                        <div class="signature">
+                            Te amo mucho, mucho, muchote, mi Bricolito preciosa.<br>
+                            La niña de los ojos más bonitos,<br>
+                            la que se merece todo lo mejor que este mundo todavía no sabe cómo darte.<br><br>
+                            Feliz cumpleaños.<br>
+                            A la niña de ayer<br>
+                            y a la mujer de hoy<br><br>
+                            Con todo mi amor,<br>
+                            David 💝
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Parte frontal (portada que se abre) -->
+                <div class="card-front">
+                    <div class="paper-texture"></div>
+                    <div class="card-front-content">
+                        <h1>¡Feliz Cumpleaños!</h1>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <button class="close-button" onclick="closeCard(event)">✕</button>
+            <div class="instruction">✨ Abre tu tarjeta de cumpleaños ✨</div>
+            
+            <!-- Botones de scroll -->
+            <div class="scroll-button scroll-up" id="scrollUp" onclick="scrollContent(event, 'up')">▲</div>
+            <div class="scroll-button scroll-down" id="scrollDown" onclick="scrollContent(event, 'down')">▼</div>
+        </div>
+    </div>
+
+    <script>
+        const cardBack = document.querySelector('.card-back');
+        const scrollUpBtn = document.getElementById('scrollUp');
+        const scrollDownBtn = document.getElementById('scrollDown');
+        const confettiGif = document.getElementById('confettiGif');
+        const balloonLeft = document.getElementById('balloonLeft');
+        const balloonRight = document.getElementById('balloonRight');
+
+        function openCard() {
+            const cardWrapper = document.getElementById('cardWrapper');
+            if (!cardWrapper.classList.contains('opened')) {
+                cardWrapper.classList.add('opened');
+                // Verificar scroll después de la animación
+                setTimeout(checkScrollButtons, 1800);
+                
+                // Mostrar confeti
+                confettiGif.classList.add('show');
+                
+                // Desvanecer confeti después de 10 segundos
+                setTimeout(() => {
+                    confettiGif.classList.remove('show');
+                }, 10000);
+                
+                // Iniciar animación de globos después del confeti (10 segundos)
+                setTimeout(() => {
+                    balloonLeft.classList.add('rising');
+                    // Pequeño retraso para el segundo globo
+                    setTimeout(() => {
+                        balloonRight.classList.add('rising');
+                    }, 300);
+                }, 10000);
+            }
+        }
+
+        function closeCard(event) {
+            event.stopPropagation();
+            const cardWrapper = document.getElementById('cardWrapper');
+            cardWrapper.classList.remove('opened');
+        }
+
+        function scrollContent(event, direction) {
+            event.stopPropagation();
+            const scrollAmount = 100; // píxeles por click
+            
+            if (direction === 'up') {
+                cardBack.scrollBy({
+                    top: -scrollAmount,
+                    behavior: 'smooth'
+                });
+            } else {
+                cardBack.scrollBy({
+                    top: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Actualizar estado de los botones después del scroll
+            setTimeout(checkScrollButtons, 300);
+        }
+
+        function checkScrollButtons() {
+            const isAtTop = cardBack.scrollTop === 0;
+            const isAtBottom = cardBack.scrollTop + cardBack.clientHeight >= cardBack.scrollHeight - 1;
+            
+            // Ocultar botón de arriba si está en el tope
+            if (isAtTop) {
+                scrollUpBtn.classList.add('hidden');
+            } else {
+                scrollUpBtn.classList.remove('hidden');
+            }
+            
+            // Ocultar botón de abajo si está en el fondo
+            if (isAtBottom) {
+                scrollDownBtn.classList.add('hidden');
+            } else {
+                scrollDownBtn.classList.remove('hidden');
+            }
+        }
+
+        // Verificar botones al hacer scroll con rueda del mouse
+        cardBack.addEventListener('scroll', checkScrollButtons);
+
+        // Prevenir scroll en el body cuando la tarjeta está abierta
+        cardBack.addEventListener('wheel', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Estructura y Función del CPU — Mapa Mental (SVG)</title>
+    <style>
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+        background: linear-gradient(135deg, #8b5cf6, #3b82f6 60%, #4f46e5);
+      }
+      .wrap { padding: 16px; }
+      .title { text-align: center; color: #fff; font-weight: 700; margin: 16px 0 20px; }
+      .title h1 { margin: 0; font-size: 40px; }
+      .board {
+        width: 100%;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      }
+      .download-btn {
+        position: fixed; right: 20px; top: 20px;
+        background: #10b981; color: #072e23; border: 1px solid #059669;
+        padding: 8px 12px; border-radius: 10px; font-weight: 700;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.25); cursor: pointer;
+      }
+      .download-btn:hover { background: #34d399; }
+
+      /* Print only the board with current zoom/pan */
+      @page { size: A4 landscape; margin: 0; }
+      @media print {
+        body { background: #fff !important; }
+        .title, .download-btn { display: none !important; }
+        .wrap { padding: 0 !important; }
+        .board { width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="title">
+        <h1>Estructura y Función del CPU</h1>
+      </div>
+      <button id="btn-pdf" class="download-btn" aria-label="Descargar PDF">Descargar PDF</button>
+      <svg id="mindmap-svg" viewBox="0 0 3200 2400" class="board" xmlns="http://www.w3.org/2000/svg" style="touch-action: none; cursor: grab;">
+        <defs>
+          <filter id="shadow">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+            <feOffset dx="2" dy="2" result="offsetblur"/>
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.3"/>
+            </feComponentTransfer>
+            <feMerge>
+              <feMergeNode/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3b82f6" stop-opacity="1" />
+            <stop offset="100%" stop-color="#1d4ed8" stop-opacity="1" />
+          </linearGradient>
+          
+          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#10b981" stop-opacity="1" />
+            <stop offset="100%" stop-color="#059669" stop-opacity="1" />
+          </linearGradient>
+          
+          <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f59e0b" stop-opacity="1" />
+            <stop offset="100%" stop-color="#d97706" stop-opacity="1" />
+          </linearGradient>
+          
+          <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8b5cf6" stop-opacity="1" />
+            <stop offset="100%" stop-color="#6d28d9" stop-opacity="1" />
+          </linearGradient>
+          
+          <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ef4444" stop-opacity="1" />
+            <stop offset="100%" stop-color="#dc2626" stop-opacity="1" />
+          </linearGradient>
+
+          <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#06b6d4" stop-opacity="1" />
+            <stop offset="100%" stop-color="#0891b2" stop-opacity="1" />
+          </linearGradient>
+        </defs>
+        <g id="content" transform="translate(0,0) scale(1)">
+        
+        <!-- Conexiones principales -->
+        <path d="M 1500 1100 L 600 300" stroke="#10b981" stroke-width="6" fill="none"/>
+        <path d="M 1700 1050 L 2600 300" stroke="#f59e0b" stroke-width="6" fill="none"/>
+        <path d="M 1400 1200 L 400 1200" stroke="#8b5cf6" stroke-width="6" fill="none"/>
+        <path d="M 1700 1200 L 2600 1200" stroke="#06b6d4" stroke-width="6" fill="none"/>
+        <path d="M 1600 1300 L 1600 1900" stroke="#ef4444" stroke-width="6" fill="none"/>
+
+        <!-- Sub-nodos ciclo — DRAGGABLE (colocados antes del nodo central para que
+             sus líneas queden debajo del óvalo de la CPU) -->
+        <path data-from-pos="600,300" data-to="node-fetch" stroke="#10b981" stroke-width="4" fill="none"/>
+        <g id="node-fetch" class="draggable" transform="translate(80,30)">
+          <rect x="0" y="0" width="320" height="115" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="3" filter="url(#shadow)"/>
+          <text x="160" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#065f46">1. FETCH</text>
+          <text x="160" y="55" text-anchor="middle" font-size="12" fill="#065f46">PC → MAR; memoria → IR</text>
+          <text x="160" y="73" text-anchor="middle" font-size="12" fill="#065f46">Se coloca la instrucción en el IR</text>
+        </g>
+
+        <path data-from-pos="600,300" data-to="node-decode" stroke="#10b981" stroke-width="4" fill="none"/>
+        <g id="node-decode" class="draggable" transform="translate(340,220)">
+          <rect x="0" y="0" width="320" height="115" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="3" filter="url(#shadow)"/>
+          <text x="160" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#065f46">2. DECODE</text>
+          <text x="160" y="55" text-anchor="middle" font-size="12" fill="#065f46">UC analiza IR y genera señales</text>
+          <text x="160" y="73" text-anchor="middle" font-size="12" fill="#065f46">Registros, memoria y flujo de control</text>
+        </g>
+
+        <path data-from-pos="600,300" data-to="node-execute" stroke="#10b981" stroke-width="4" fill="none"/>
+        <g id="node-execute" class="draggable" transform="translate(700,30)">
+          <rect x="0" y="0" width="320" height="115" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="3" filter="url(#shadow)"/>
+          <text x="160" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#065f46">3. EXECUTE</text>
+          <text x="160" y="55" text-anchor="middle" font-size="12" fill="#065f46">ALU opera y actualiza banderas</text>
+          <text x="160" y="73" text-anchor="middle" font-size="12" fill="#065f46">Con operandos en registros</text>
+        </g>
+
+        <path data-from-pos="600,300" data-to="node-memory" stroke="#10b981" stroke-width="4" fill="none"/>
+        <g id="node-memory" class="draggable" transform="translate(760,230)">
+          <rect x="0" y="0" width="320" height="115" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="3" filter="url(#shadow)"/>
+          <text x="160" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#065f46">4. MEMORY</text>
+          <text x="160" y="55" text-anchor="middle" font-size="12" fill="#065f46">Acceso de carga/almacenamiento</text>
+          <text x="160" y="73" text-anchor="middle" font-size="12" fill="#065f46">Usa MAR y MDR</text>
+        </g>
+
+        <path data-from-pos="600,300" data-to="node-writeback" stroke="#10b981" stroke-width="4" fill="none"/>
+        <g id="node-writeback" class="draggable" transform="translate(980,420)">
+          <rect x="0" y="0" width="320" height="115" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="3" filter="url(#shadow)"/>
+          <text x="160" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#065f46">5. WRITE-BACK</text>
+          <text x="160" y="55" text-anchor="middle" font-size="12" fill="#065f46">Escritura del resultado y avance de PC</text>
+        </g>
+        
+        <!-- NODO CENTRAL: CPU -->
+        <ellipse cx="1600" cy="1150" rx="180" ry="120" fill="url(#grad1)" filter="url(#shadow)"/>
+        <text x="1600" y="1130" text-anchor="middle" font-size="38" font-weight="bold" fill="white">CPU</text>
+        <text x="1600" y="1165" text-anchor="middle" font-size="16" fill="white">La CPU interpreta la ISA, lee instrucciones</text>
+        <text x="1600" y="1190" text-anchor="middle" font-size="16" fill="white">de memoria, las decodifica con la unidad</text>
+        <text x="1600" y="1215" text-anchor="middle" font-size="16" fill="white">de control y coordina su ejecución</text>
+        <text x="1600" y="1240" text-anchor="middle" font-size="16" fill="white">usando registros y ALU</text>
+        
+        <!-- Nota determinismo -->
+        <rect x="1300" y="900" width="600" height="110" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="3"/>
+        <text x="1600" y="935" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e3a8a">El comportamiento es determinista:</text>
+        <text x="1600" y="965" text-anchor="middle" font-size="14" fill="#1e40af">mismo estado inicial + misma instrucción ⇒</text>
+        <text x="1600" y="990" text-anchor="middle" font-size="14" fill="#1e40af">mismas microoperaciones y mismo resultado,</text>
+        <text x="1600" y="1010" text-anchor="middle" font-size="14" fill="#1e40af">sin decisiones aleatorias</text>
+        
+        <!-- RAMA 1: CICLO DE INSTRUCCIÓN (arriba izquierda) -->
+        <ellipse cx="600" cy="300" rx="160" ry="70" fill="url(#grad2)" filter="url(#shadow)"/>
+        <text x="600" y="290" text-anchor="middle" font-size="26" font-weight="bold" fill="white">CICLO DE</text>
+        <text x="600" y="320" text-anchor="middle" font-size="26" font-weight="bold" fill="white">INSTRUCCIÓN</text>
+        <text x="600" y="345" text-anchor="middle" font-size="16" fill="white">(5 etapas)</text>
+        
+        <!-- RAMA 2: UNIDADES INTERNAS (arriba derecha) -->
+        <ellipse cx="2600" cy="300" rx="160" ry="70" fill="url(#grad3)" filter="url(#shadow)"/>
+        <text x="2600" y="290" text-anchor="middle" font-size="26" font-weight="bold" fill="white">UNIDADES</text>
+        <text x="2600" y="320" text-anchor="middle" font-size="26" font-weight="bold" fill="white">INTERNAS</text>
+        <text x="2600" y="345" text-anchor="middle" font-size="16" fill="white">ALU, UC y registros</text>
+        
+        <!-- Sub-nodo ALU (draggable) -->
+        <path data-from-pos="2500,250" data-to="node-alu" stroke="#f59e0b" stroke-width="4" fill="none"/>
+        <g id="node-alu" class="draggable" transform="translate(1950,20)">
+          <rect x="0" y="0" width="600" height="160" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+          <text x="300" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#92400e">ALU</text>
+          <text x="300" y="60" text-anchor="middle" font-size="12" fill="#92400e">Hace operaciones aritméticas (suma, resta, incremento,</text>
+          <text x="300" y="80" text-anchor="middle" font-size="12" fill="#92400e">decremento) y lógicas (AND, OR, NOT, XOR), además de</text>
+          <text x="300" y="100" text-anchor="middle" font-size="12" fill="#92400e">comparaciones; genera banderas de estado. La ALU trabaja</text>
+          <text x="300" y="120" text-anchor="middle" font-size="12" fill="#92400e">con operandos en registros rápidos (acumulador, registro de</text>
+          <text x="300" y="140" text-anchor="middle" font-size="12" fill="#92400e">entrada) y envía resultados y banderas a otros registros y a la UC</text>
+        </g>
+        
+        <!-- Sub-nodo UC (draggable) -->
+        <path data-from-pos="2680,240" data-to="node-uc" stroke="#f59e0b" stroke-width="4" fill="none"/>
+        <g id="node-uc" class="draggable" transform="translate(2660,0)">
+          <rect x="0" y="0" width="550" height="150" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+          <text x="275" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#92400e">UNIDAD DE CONTROL (UC)</text>
+          <text x="275" y="60" text-anchor="middle" font-size="12" fill="#92400e">Interpreta la instrucción (IR), secuencia las microoperaciones</text>
+          <text x="275" y="80" text-anchor="middle" font-size="12" fill="#92400e">y genera señales para ALU, registros y memoria. La UC usa un</text>
+          <text x="275" y="100" text-anchor="middle" font-size="12" fill="#92400e">decodificador que traduce el campo de operación en señales:</text>
+          <text x="275" y="120" text-anchor="middle" font-size="12" fill="#92400e">qué registros intervienen, si se accede a memoria y cómo se</text>
+          <text x="275" y="140" text-anchor="middle" font-size="12" fill="#92400e">actualiza el flujo de control</text>
+        </g>
+        
+        <!-- Sub-nodo Mecanismos de Control (draggable con contenido) -->
+        <path data-from-pos="2700,320" data-to="node-control" stroke="#f59e0b" stroke-width="4" fill="none"/>
+        <g id="node-control" class="draggable" transform="translate(2720,480)">
+          <rect x="0" y="0" width="520" height="230" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+          <text x="260" y="35" text-anchor="middle" font-size="17" font-weight="bold" fill="#92400e">MECANISMO DE CONTROL</text>
+          <text x="260" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">cableado vs microprogramado</text>
+          <rect x="20" y="85" width="480" height="65" rx="8" fill="#fbbf24" stroke="#92400e" stroke-width="2"/>
+          <text x="260" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#78350f">Control cableado:</text>
+          <text x="260" y="130" text-anchor="middle" font-size="11" fill="#78350f">lógica combinacional fija; muy rápido pero poco flexible,</text>
+          <text x="260" y="146" text-anchor="middle" font-size="11" fill="#78350f">como un director con partitura rígida</text>
+          <rect x="20" y="160" width="480" height="65" rx="8" fill="#fbbf24" stroke="#92400e" stroke-width="2"/>
+          <text x="260" y="185" text-anchor="middle" font-size="13" font-weight="bold" fill="#78350f">Control microprogramado:</text>
+          <text x="260" y="205" text-anchor="middle" font-size="11" fill="#78350f">usa una memoria interna con microrutinas; más flexible</text>
+          <text x="260" y="221" text-anchor="middle" font-size="11" fill="#78350f">pero algo más lento, como un director con cuaderno editable</text>
+        </g>
+        
+        <!-- RAMA 3: REGISTROS (izquierda) -->
+        <ellipse cx="400" cy="1200" rx="160" ry="70" fill="url(#grad4)" filter="url(#shadow)"/>
+        <text x="400" y="1190" text-anchor="middle" font-size="26" font-weight="bold" fill="white">REGISTROS</text>
+        <text x="400" y="1220" text-anchor="middle" font-size="20" fill="white">"memoria inmediata"</text>
+        <text x="400" y="1245" text-anchor="middle" font-size="16" fill="white">de la CPU</text>
+        
+        <!-- Ejemplo 8086 (draggable) -->
+        <path data-from-pos="320,1160" data-to="node-8086" stroke="#8b5cf6" stroke-width="4" fill="none"/>
+        <g id="node-8086" class="draggable" transform="translate(30,920)">
+          <rect x="0" y="0" width="580" height="140" rx="12" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3"/>
+          <text x="290" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#5b21b6">Ejemplo 8086:</text>
+          <text x="290" y="60" text-anchor="middle" font-size="12" fill="#5b21b6">FLAGS (banderas), AX, BX, CX, DX (uso general),</text>
+          <text x="290" y="80" text-anchor="middle" font-size="12" fill="#5b21b6">CS/DS/SS/ES (segmentos), IP, SP, BP, SI, DI</text>
+          <text x="290" y="100" text-anchor="middle" font-size="12" fill="#5b21b6">(punteros e índices)</text>
+        </g>
+        
+        <!-- Sub-nodos registros (draggable) -->
+        <path data-from-pos="300,1250" data-to="node-regcontrol" stroke="#8b5cf6" stroke-width="4" fill="none"/>
+        <g id="node-regcontrol" class="draggable" transform="translate(30,1420)">
+          <rect x="0" y="0" width="380" height="150" rx="12" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3"/>
+          <text x="190" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#5b21b6">Registros de control</text>
+          <text x="190" y="60" text-anchor="middle" font-size="12" fill="#5b21b6">PC, IR, registros de estado/banderas</text>
+        </g>
+        
+        <path data-from-pos="400,1270" data-to="node-regaddr" stroke="#8b5cf6" stroke-width="4" fill="none"/>
+        <g id="node-regaddr" class="draggable" transform="translate(210,1460)">
+          <rect x="0" y="0" width="420" height="140" rx="12" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3"/>
+          <text x="210" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#5b21b6">Registros de direcciones</text>
+          <text x="210" y="60" text-anchor="middle" font-size="12" fill="#5b21b6">Por ejemplo MAR, señalan posiciones</text>
+          <text x="210" y="80" text-anchor="middle" font-size="12" fill="#5b21b6">de memoria a leer/escribir</text>
+        </g>
+        
+        <path data-from-pos="500,1250" data-to="node-regdata" stroke="#8b5cf6" stroke-width="4" fill="none"/>
+        <g id="node-regdata" class="draggable" transform="translate(520,1420)">
+          <rect x="0" y="0" width="450" height="150" rx="12" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3"/>
+          <text x="225" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#5b21b6">Registros de datos</text>
+          <text x="225" y="60" text-anchor="middle" font-size="12" fill="#5b21b6">MDR, acumulador y registros de propósito</text>
+          <text x="225" y="80" text-anchor="middle" font-size="12" fill="#5b21b6">general para operandos y resultados</text>
+        </g>
+        
+        <!-- RAMA 4: PIPELINE (derecha) -->
+        <ellipse cx="2600" cy="1200" rx="160" ry="70" fill="url(#grad6)" filter="url(#shadow)"/>
+        <text x="2600" y="1190" text-anchor="middle" font-size="26" font-weight="bold" fill="white">PIPELINE Y</text>
+        <text x="2600" y="1220" text-anchor="middle" font-size="26" font-weight="bold" fill="white">PARALELISMO</text>
+        <text x="2600" y="1245" text-anchor="middle" font-size="16" fill="white">elemental</text>
+        
+        <!-- Sub-nodos pipeline (draggable) -->
+        <path data-from-pos="2700,1240" data-to="node-pipeline" stroke="#06b6d4" stroke-width="4" fill="none"/>
+        <g id="node-pipeline" class="draggable" transform="translate(2680,1420)">
+          <rect x="0" y="0" width="520" height="200" rx="12" fill="#cffafe" stroke="#06b6d4" stroke-width="3"/>
+          <text x="260" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#164e63">PIPELINE</text>
+          <text x="260" y="60" text-anchor="middle" font-size="12" fill="#164e63">Divide la ejecución en etapas encadenadas; mientras una</text>
+          <text x="260" y="80" text-anchor="middle" font-size="12" fill="#164e63">instrucción se ejecuta, otra se decodifica y otra se busca,</text>
+          <text x="260" y="100" text-anchor="middle" font-size="12" fill="#164e63">usando las mismas unidades en diferentes fases. Un pipeline</text>
+          <text x="260" y="120" text-anchor="middle" font-size="12" fill="#164e63">básico, una vez "lleno", permite completar una instrucción</text>
+          <text x="260" y="140" text-anchor="middle" font-size="12" fill="#164e63">por ciclo porque cada etapa trabaja en paralelo en una fase</text>
+          <text x="260" y="160" text-anchor="middle" font-size="12" fill="#164e63">distinta</text>
+        </g>
+        
+        <path data-from-pos="2600,1270" data-to="node-parallel" stroke="#06b6d4" stroke-width="4" fill="none"/>
+        <g id="node-parallel" class="draggable" transform="translate(2350,1700)">
+          <rect x="0" y="0" width="500" height="180" rx="12" fill="#cffafe" stroke="#06b6d4" stroke-width="3"/>
+          <text x="250" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#164e63">Paralelismo elemental</text>
+          <text x="250" y="60" text-anchor="middle" font-size="12" fill="#164e63">No ejecuta instrucciones completas simultáneamente,</text>
+          <text x="250" y="80" text-anchor="middle" font-size="12" fill="#164e63">sino que superpone fases (fetch de I₃, decode de I₂,</text>
+          <text x="250" y="100" text-anchor="middle" font-size="12" fill="#164e63">execute de I₁ a la vez)</text>
+          <text x="250" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="#164e63">Ventaja: mejora el rendimiento sin cambiar la ISA</text>
+          <text x="250" y="145" text-anchor="middle" font-size="12" fill="#164e63">ni los programas; el paralelismo es interno y transparente</text>
+          <text x="250" y="165" text-anchor="middle" font-size="12" fill="#164e63">para el programador</text>
+        </g>
+        
+        <!-- RAMA 5: HAZARDS (abajo) -->
+        <ellipse cx="1600" cy="1900" rx="160" ry="70" fill="url(#grad5)" filter="url(#shadow)"/>
+        <text x="1600" y="1890" text-anchor="middle" font-size="26" font-weight="bold" fill="white">HAZARDS</text>
+        <text x="1600" y="1920" text-anchor="middle" font-size="20" fill="white">Problemas del</text>
+        <text x="1600" y="1945" text-anchor="middle" font-size="20" fill="white">pipeline</text>
+        
+        <!-- Sub-nodos hazards (draggable) -->
+        <path data-from-pos="1480,1950" data-to="node-hstruct" stroke="#ef4444" stroke-width="4" fill="none"/>
+        <g id="node-hstruct" class="draggable" transform="translate(750,2100)">
+          <rect x="0" y="0" width="600" height="150" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/>
+          <text x="300" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#991b1b">Hazards estructurales</text>
+          <text x="300" y="60" text-anchor="middle" font-size="12" fill="#991b1b">Varias instrucciones compiten por el mismo recurso</text>
+          <text x="300" y="80" text-anchor="middle" font-size="12" fill="#991b1b">(memoria, ALU, registros con un solo puerto).</text>
+          <text x="300" y="100" text-anchor="middle" font-size="12" fill="#991b1b">El pipeline debe esperar</text>
+        </g>
+        
+        <path data-from-pos="1600,1970" data-to="node-hdata" stroke="#ef4444" stroke-width="4" fill="none"/>
+        <g id="node-hdata" class="draggable" transform="translate(1350,2120)">
+          <rect x="0" y="0" width="500" height="150" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/>
+          <text x="250" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#991b1b">Hazards de datos</text>
+          <text x="250" y="60" text-anchor="middle" font-size="12" fill="#991b1b">Una instrucción necesita un resultado que aún no se ha</text>
+          <text x="250" y="80" text-anchor="middle" font-size="12" fill="#991b1b">escrito (por ejemplo, leer un registro que la instrucción</text>
+          <text x="250" y="100" text-anchor="middle" font-size="12" fill="#991b1b">anterior todavía está calculando)</text>
+        </g>
+        
+        <path data-from-pos="1720,1950" data-to="node-hcontrol" stroke="#ef4444" stroke-width="4" fill="none"/>
+        <g id="node-hcontrol" class="draggable" transform="translate(1900,2100)">
+          <rect x="0" y="0" width="500" height="170" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/>
+          <text x="250" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#991b1b">Hazards de control</text>
+          <text x="250" y="60" text-anchor="middle" font-size="12" fill="#991b1b">Saltos y decisiones de flujo; el procesador puede traer</text>
+          <text x="250" y="80" text-anchor="middle" font-size="12" fill="#991b1b">instrucciones equivocadas antes de saber si el salto se</text>
+          <text x="250" y="100" text-anchor="middle" font-size="12" fill="#991b1b">toma, y luego debe descartarlas</text>
+        </g>
+        </g>
+      </svg>
+      <script>
+        (function() {
+          const svg = document.getElementById('mindmap-svg');
+          const content = document.getElementById('content');
+          let scale = 1;
+          let tx = 0, ty = 0;
+          let dragging = false, lastX = 0, lastY = 0;
+
+          function applyTransform() {
+            content.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+          }
+
+          // Wheel zoom (Ctrl+wheel for fine control)
+          svg.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = Math.sign(e.deltaY);
+            const factor = e.ctrlKey ? 0.05 : 0.15;
+            const newScale = Math.max(0.4, Math.min(2.5, scale * (1 - delta * factor)));
+
+            // Zoom toward pointer
+            const pt = svg.createSVGPoint();
+            pt.x = e.clientX; pt.y = e.clientY;
+            const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+            tx = loc.x - (loc.x - tx) * (newScale / scale);
+            ty = loc.y - (loc.y - ty) * (newScale / scale);
+
+            scale = newScale;
+            applyTransform();
+          }, { passive: false });
+
+          // Drag to pan (ignore when interacting with nodes)
+          svg.addEventListener('pointerdown', (e) => {
+            if (e.target && e.target.closest && e.target.closest('.draggable')) return;
+            dragging = true; lastX = e.clientX; lastY = e.clientY; svg.style.cursor = 'grabbing'; svg.setPointerCapture(e.pointerId);
+          });
+          svg.addEventListener('pointermove', (e) => {
+            if (!dragging) return;
+            const dx = (e.clientX - lastX);
+            const dy = (e.clientY - lastY);
+            lastX = e.clientX; lastY = e.clientY;
+            tx += dx / scale; ty += dy / scale;
+            applyTransform();
+          });
+          svg.addEventListener('pointerup', (e) => { dragging = false; svg.style.cursor = 'grab'; svg.releasePointerCapture(e.pointerId); });
+
+          // --- Drag nodes ---
+          function parseTranslate(el) {
+            const t = el.getAttribute('transform') || '';
+            const m = /translate\(([-0-9.]+),\s*([-0-9.]+)\)/.exec(t);
+            if (m) return { x: parseFloat(m[1]), y: parseFloat(m[2]) };
+            return { x: 0, y: 0 };
+          }
+
+          function setTranslate(el, pos) {
+            el.setAttribute('transform', `translate(${pos.x},${pos.y})`);
+          }
+
+          function svgPoint(x, y) {
+            const pt = svg.createSVGPoint(); pt.x = x; pt.y = y; return pt;
+          }
+
+          function centerOf(el) {
+            const bbox = el.getBBox();
+            const local = svgPoint(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
+            const screen = local.matrixTransform(el.getCTM());
+            const contentCoords = screen.matrixTransform(content.getCTM().inverse());
+            return { x: contentCoords.x, y: contentCoords.y };
+          }
+
+          function updateLinks() {
+            const paths = content.querySelectorAll('path[data-to]');
+            paths.forEach(p => {
+              const toId = p.dataset.to;
+              const toEl = document.getElementById(toId);
+              if (!toEl) return;
+              const dest = centerOf(toEl);
+              let src;
+              if (p.dataset.from) {
+                const fromEl = document.getElementById(p.dataset.from);
+                src = centerOf(fromEl);
+              } else if (p.dataset.fromPos) {
+                const parts = p.dataset.fromPos.split(',');
+                src = { x: parseFloat(parts[0]), y: parseFloat(parts[1]) };
+              } else {
+                src = { x: 0, y: 0 };
+              }
+              p.setAttribute('d', `M ${src.x} ${src.y} L ${dest.x} ${dest.y}`);
+            });
+          }
+
+          // Initialize links once
+          updateLinks();
+
+          // Make groups draggable
+          content.querySelectorAll('.draggable').forEach(el => {
+            let p = parseTranslate(el);
+            let down = false, sx = 0, sy = 0;
+            let movable = false; // toggle with click
+
+            // Visual cue: highlight stroke when movable
+            const rect = el.querySelector('rect');
+            const origStroke = rect ? rect.getAttribute('stroke') : null;
+            const origWidth = rect ? rect.getAttribute('stroke-width') : null;
+
+            el.style.cursor = 'default';
+
+            el.addEventListener('click', e => {
+              e.stopPropagation();
+              movable = !movable;
+              if (rect) {
+                if (movable) { rect.setAttribute('stroke', '#0ea5e9'); rect.setAttribute('stroke-width', '4'); }
+                else {
+                  if (origStroke) rect.setAttribute('stroke', origStroke);
+                  if (origWidth) rect.setAttribute('stroke-width', origWidth);
+                }
+              }
+              el.style.cursor = movable ? 'move' : 'default';
+            });
+
+            el.addEventListener('pointerdown', e => {
+              e.stopPropagation();
+              if (!movable) return; // only move when toggled on
+              down = true; sx = e.clientX; sy = e.clientY; el.setPointerCapture(e.pointerId);
+            });
+            el.addEventListener('pointermove', e => {
+              if (!down) return;
+              const dx = (e.clientX - sx) / scale;
+              const dy = (e.clientY - sy) / scale;
+              sx = e.clientX; sy = e.clientY;
+              p.x += dx; p.y += dy;
+              setTranslate(el, p);
+              updateLinks();
+            });
+            el.addEventListener('pointerup', e => { down = false; el.releasePointerCapture(e.pointerId); });
+            el.addEventListener('pointercancel', () => { down = false; });
+          });
+          // PDF download button
+          const btn = document.getElementById('btn-pdf');
+          if (btn) {
+            btn.addEventListener('click', () => window.print());
+          }
+        
+        })();
+      </script>
+    </div>
+  </body>
+</html>
