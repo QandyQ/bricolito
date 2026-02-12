@@ -63,7 +63,44 @@
             position: relative;
             transform-style: preserve-3d;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease-out;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.6),
+                        0 0 40px rgba(255, 75, 150, 0.4),
+                        0 0 60px rgba(255, 192, 203, 0.3),
+                        0 15px 40px rgba(0, 0, 0, 0.3);
+            animation: cardGlow 2.5s ease-in-out infinite,
+                       cardSway 3s ease-in-out infinite;
+        }
+
+        @keyframes cardGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 105, 180, 0.6),
+                            0 0 40px rgba(255, 75, 150, 0.4),
+                            0 0 60px rgba(255, 192, 203, 0.3),
+                            0 15px 40px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 105, 180, 0.9),
+                            0 0 60px rgba(255, 75, 150, 0.7),
+                            0 0 80px rgba(255, 192, 203, 0.5),
+                            0 15px 40px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* Animación de balanceo */
+        @keyframes cardSway {
+            0%, 100% {
+                transform: rotateZ(-2deg);
+            }
+            50% {
+                transform: rotateZ(2deg);
+            }
+        }
+
+        /* Detener balanceo cuando se abre */
+        .card-wrapper.opened {
+            animation: cardGlow 2.5s ease-in-out infinite;
+            transform: rotateZ(0deg);
         }
 
         .card-wrapper:hover:not(.opened) {
@@ -533,6 +570,39 @@
             animation: floatUp 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
                        glowPulse 2s ease-in-out infinite;
         }
+
+        /* Globos aleatorios que vuelan después del confeti */
+        .random-balloon {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            z-index: 100;
+            pointer-events: none;
+            bottom: 0;
+            opacity: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.7)) 
+                    drop-shadow(0 0 15px rgba(255, 100, 0, 0.5));
+            animation: randomBalloonFly 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .random-balloon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(1.2);
+        }
+
+        /* Animación de vuelo aleatorio */
+        @keyframes randomBalloonFly {
+            0% {
+                bottom: -100px;
+                opacity: 1;
+            }
+            100% {
+                bottom: 100vh;
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -810,6 +880,34 @@
             };
         }
 
+        function createRandomBalloons() {
+            const numBalloons = 20;
+            
+            for (let i = 0; i < numBalloons; i++) {
+                setTimeout(() => {
+                    const balloon = document.createElement('div');
+                    balloon.className = 'random-balloon';
+                    
+                    // Posición horizontal aleatoria
+                    const randomLeft = Math.random() * 100;
+                    balloon.style.left = randomLeft + '%';
+                    
+                    // Img de globo simple
+                    const img = document.createElement('img');
+                    img.src = 'cumpleaños-hello/globo.gif';
+                    img.alt = 'Globo';
+                    
+                    balloon.appendChild(img);
+                    document.body.appendChild(balloon);
+                    
+                    // Eliminar globo después de la animación
+                    setTimeout(() => {
+                        balloon.remove();
+                    }, 4000);
+                }, i * 80);
+            }
+        }
+
         function openCard() {
             const cardWrapper = document.getElementById('cardWrapper');
             if (!cardWrapper.classList.contains('opened')) {
@@ -832,13 +930,17 @@
                     confettiGif.classList.remove('show');
                 }, 10000);
                 
-                // Iniciar animación de globos después del confeti (10 segundos)
+                // Iniciar animación de globos aleatorios después del confeti (10 segundos)
                 setTimeout(() => {
-                    balloonLeft.classList.add('rising');
-                    // Pequeño retraso para el segundo globo
+                    createRandomBalloons();
+                    
+                    // Iniciar animación de cc3 y cc4 después de que terminen los globos aleatorios (4 segundos después)
                     setTimeout(() => {
-                        balloonRight.classList.add('rising');
-                    }, 300);
+                        balloonLeft.classList.add('rising');
+                        setTimeout(() => {
+                            balloonRight.classList.add('rising');
+                        }, 300);
+                    }, 4000);
                 }, 10000);
             }
         }
@@ -847,6 +949,9 @@
             event.stopPropagation();
             const cardWrapper = document.getElementById('cardWrapper');
             cardWrapper.classList.remove('opened');
+            
+            // Eliminar todos los globos aleatorios
+            document.querySelectorAll('.random-balloon').forEach(balloon => balloon.remove());
             
             // Detener todas las pistas de audio
             confettiAudio.pause();
