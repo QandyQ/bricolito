@@ -741,6 +741,16 @@
         const birthdayLoopAudio = document.getElementById('birthdayLoopAudio');
 
         function playMusicSequence() {
+            // Detener cualquier reproducción previa
+            birthdayAudio.pause();
+            musicAudio.pause();
+            birthdayLoopAudio.pause();
+            
+            // Limpiar listeners previos
+            birthdayAudio.onended = null;
+            musicAudio.onended = null;
+            birthdayLoopAudio.onended = null;
+            
             // Reproducir feliz.mp3
             birthdayAudio.currentTime = 0;
             birthdayAudio.play().catch(err => console.log('No se pudo reproducir el audio:', err));
@@ -791,6 +801,18 @@
             event.stopPropagation();
             const cardWrapper = document.getElementById('cardWrapper');
             cardWrapper.classList.remove('opened');
+            
+            // Detener todas las pistas de audio
+            birthdayAudio.pause();
+            birthdayAudio.currentTime = 0;
+            musicAudio.pause();
+            musicAudio.currentTime = 0;
+            birthdayLoopAudio.pause();
+            birthdayLoopAudio.currentTime = 0;
+            
+            // Limpiar listeners para evitar duplicados
+            birthdayAudio.onended = null;
+            musicAudio.onended = null;
         }
 
         function scrollContent(event, direction) {
