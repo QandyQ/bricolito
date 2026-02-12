@@ -507,6 +507,12 @@
     <audio id="birthdayAudio" preload="auto">
         <source src="cumpleaños-hello/feliz.mp3" type="audio/mpeg">
     </audio>
+    <audio id="musicAudio" preload="auto">
+        <source src="cumpleaños-hello/musica2.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="birthdayLoopAudio" preload="auto" loop>
+        <source src="cumpleaños-hello/feliz.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Gifs que suben como globos -->
     <div class="balloon-gif left" id="balloonLeft">
@@ -731,6 +737,26 @@
         const balloonLeft = document.getElementById('balloonLeft');
         const balloonRight = document.getElementById('balloonRight');
         const birthdayAudio = document.getElementById('birthdayAudio');
+        const musicAudio = document.getElementById('musicAudio');
+        const birthdayLoopAudio = document.getElementById('birthdayLoopAudio');
+
+        function playMusicSequence() {
+            // Reproducir feliz.mp3
+            birthdayAudio.currentTime = 0;
+            birthdayAudio.play().catch(err => console.log('No se pudo reproducir el audio:', err));
+            
+            // Cuando termine feliz.mp3, reproducir musica2.mp3
+            birthdayAudio.onended = function() {
+                musicAudio.currentTime = 0;
+                musicAudio.play().catch(err => console.log('No se pudo reproducir musica2:', err));
+                
+                // Cuando termine musica2.mp3, reproducir feliz.mp3 en bucle
+                musicAudio.onended = function() {
+                    birthdayLoopAudio.currentTime = 0;
+                    birthdayLoopAudio.play().catch(err => console.log('No se pudo reproducir el bucle:', err));
+                };
+            };
+        }
 
         function openCard() {
             const cardWrapper = document.getElementById('cardWrapper');
@@ -739,9 +765,8 @@
                 // Verificar scroll después de la animación
                 setTimeout(checkScrollButtons, 1800);
                 
-                // Reproducir música
-                birthdayAudio.currentTime = 0;
-                birthdayAudio.play().catch(err => console.log('No se pudo reproducir el audio:', err));
+                // Reproducir secuencia de música
+                playMusicSequence();
                 
                 // Mostrar confeti
                 confettiGif.classList.add('show');
