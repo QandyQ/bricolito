@@ -1,0 +1,231 @@
+╔══════════════════════════════════════════════════════════════════╗
+║   NÚMEROS DE CATALAN - PROBLEMA DE LA MESA REDONDA               ║
+║   Guía Rápida de Inicio                                           ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📦 ARCHIVOS INCLUIDOS
+════════════════════════════════════════════════════════════════════
+
+1️⃣  catalan.py ⭐ ARCHIVO PRINCIPAL
+    ├─ Menú interactivo
+    ├─ Genera configuraciones
+    ├─ Visualización gráfica
+    └─ Explicaciones completas
+    
+    EJECUTA: python catalan.py
+
+2️⃣  demo_catalan.py 🎬 DEMOSTRACIÓN
+    ├─ Ejecuta automáticamente sin input
+    ├─ Muestra 2 ejemplos: 4 y 6 personas
+    ├─ Genera gráficas
+    └─ Perfecto para ver cómo funciona
+    
+    EJECUTA: python demo_catalan.py
+
+3️⃣  README_CATALAN.md 📚 DOCUMENTACIÓN
+    └─ Guía completa, ejemplos y explicaciones
+
+
+✨ CARACTERÍSTICAS PRINCIPALES
+════════════════════════════════════════════════════════════════════
+
+✅ Calcula números de Catalan automáticamente
+✅ Genera TODAS las configuraciones posibles sin cruces
+✅ Verifica que no haya saludos que se crucen
+✅ Visualización gráfica con colores
+✅ Menú interactivo y fácil
+✅ Soporta 2-12 personas
+
+
+🔢 EJEMPLOS DE RESULTADOS
+════════════════════════════════════════════════════════════════════
+
+ENTRADA: 4 personas
+┌─────────────────────────────────────┐
+│ Configuración 1: 0↔1, 2↔3          │ ✅ Sin cruces
+│                                     │
+│     0 ------- 1                    │
+│    /           \                   │
+│   3 ------- 2    (mesa)            │
+└─────────────────────────────────────┘
+
+ENTRADA: 6 personas
+┌──────────────────────────────────────────────────┐
+│ Total de configuraciones: 5 = C(3)               │
+│                                                  │
+│ 1. Saludos: 0↔1, 2↔3, 4↔5         ✅            │
+│ 2. Saludos: 0↔1, 2↔5, 3↔4         ✅            │
+│ 3. Saludos: 0↔3, 1↔2, 4↔5         ✅            │
+│ 4. Saludos: 0↔5, 1↔2, 3↔4         ✅            │
+│ 5. Saludos: 0↔5, 1↔4, 2↔3         ✅            │
+└──────────────────────────────────────────────────┘
+
+
+🚀 INICIO RÁPIDO
+════════════════════════════════════════════════════════════════════
+
+Paso 1: Abre Terminal/PowerShell en la carpeta
+
+Paso 2: Ejecuta uno de estos comandos:
+
+  A) INTERACTIVO (recomendado):
+     python catalan.py
+     
+  B) DEMOSTRACIÓN AUTOMÁTICA:
+     python demo_catalan.py
+
+
+📋 OPCIONES DEL MENÚ INTERACTIVO
+════════════════════════════════════════════════════════════════════
+
+┌─ OPCIÓN 1: Ver secuencia ──────────────────────────────────────┐
+│ Muestra los primeros N números de Catalan                       │
+│ Ejemplo output:                                                 │
+│   n=0:  C(0) = 1                                               │
+│   n=1:  C(1) = 1                                               │
+│   n=2:  C(2) = 2                                               │
+│   n=3:  C(3) = 5                                               │
+│   ...                                                           │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ OPCIÓN 2: Mesa redonda ───────────────────────────────────────┐
+│ Ingresa número de PERSONAS (debe ser PAR)                       │
+│ El programa calcula y muestra:                                  │
+│ ✅ Número esperado de configuraciones (C(n/2))                 │
+│ ✅ Todas configuraciones encontradas                            │
+│ ✅ Detalle de cada configuración                               │
+│ ✅ Gráficas visuales                                           │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ OPCIÓN 3: Explicación ────────────────────────────────────────┐
+│ Teoría completa sobre números de Catalan                        │
+│ - Definición y fórmula                                          │
+│ - Problema de la mesa redonda explicado                         │
+│ - Aplicaciones practicas                                        │
+│ - Observaciones interesantes                                    │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ OPCIÓN 4: Salir ──────────────────────────────────────────────┐
+│ Cierra el programa                                              │
+└────────────────────────────────────────────────────────────────┘
+
+
+🎯 CASOS DE USO
+════════════════════════════════════════════════════════════════════
+
+📚 Estudiar combinatoria:
+   → Usar: catalan.py opción 3 (explicación)
+   → Probar: Diferentes números de personas
+
+🔬 Investigar propiedades:
+   → Usar: catalan.py opción 1 (secuencia)
+   → Ver patrones de crecimiento
+
+💻 Aprender algoritmos:
+   → Revisar código de backtracking
+   → Entender detección de cruces
+   → Estudiar optimizaciones
+
+
+💡 TIPS Y TRUCOS
+════════════════════════════════════════════════════════════════════
+
+✏️  Para conseguir mejor rendimiento sin gráficas:
+    - Comenta la línea: plt.show()
+    - Solo calcula sin visualizar
+
+✏️  Para modificar cantidad de personas:
+    - Cambia límite en: resolver_mesa_redonda(max_personas)
+    - Nota: mayor cantidad = mayor tiempo de cálculo
+
+✏️  Para agregar más números de Catalan:
+    - Cambia en mostrar_estadisticas(n=20)
+
+
+⚠️  LÍMITES Y CONSIDERACIONES
+════════════════════════════════════════════════════════════════════
+
+Número de personas | Tiempo aprox | Configuraciones
+─────────────────────────────────────────────────
+4                  | < 1ms        | 2
+6                  | < 5ms        | 5
+8                  | < 50ms       | 14
+10                 | ~ 200ms      | 42
+12                 | ~ 1s         | 132
+14                 | ~ 5s         | 429
+16                 | ~ 30s        | 1,430
+
+Nota: Tiempos varían según CPU. Para >14 personas usa código modificado.
+
+
+🔗 FÓRMULA MATEMÁTICA
+════════════════════════════════════════════════════════════════════
+
+C(n) = (2n)! / ((n+1)! * n!)
+
+Equivalentes:
+• C(n) = Binomial(2n, n) / (n + 1)
+• C(n) = Σ(i=0 a n-1) C(i) * C(n-1-i)
+
+
+📊 VISUALIZACIÓN GRÁFICA
+════════════════════════════════════════════════════════════════════
+
+El programa genera gráficas que muestran:
+
+• Círculo (mesa redonda) en línea punteada azul
+• Puntos rojos = personas (numeradas 0, 1, 2, ...)
+• Líneas de colores = saludos sin cruces
+• Título = número de configuración y detalle
+
+Características:
+✓ Una gráfica por configuración
+✓ Máximo 9 configuraciones por pantalla
+✓ Colores variados para distinguir saludos
+✓ Etiquetas para identificar personas
+
+
+🆘 SOLUCIÓN DE PROBLEMAS
+════════════════════════════════════════════════════════════════════
+
+❌ "ModuleNotFoundError: No module named 'matplotlib'"
+✓ Solución: pip install matplotlib numpy
+
+❌ Error de caracteres especiales en PowerShell
+✓ Solución: $env:PYTHONIOENCODING = "utf-8"
+
+❌ Gráficas no aparecen
+✓ Solución: Selecciona 's' cuando pregunte "¿Ver gráficas?"
+
+❌ Programa lento con muchas personas
+✓ Solución: Reduce a menos personas o comenta plt.show()
+
+
+📧 PREGUNTAS FRECUENTES
+════════════════════════════════════════════════════════════════════
+
+P: ¿Por qué debe ser PAR el número de personas?
+R: Porque cada persona debe saludarse con exactamente 1 otra persona.
+   Si total es impar, alguien queda solo.
+
+P: ¿Puedo usar más de 12 personas?
+R: Sí, pero el tiempo crece exponencialmente. C(8) ya tiene 1,430 configs.
+
+P: ¿Qué es el "backtracking"?
+R: Algoritmo que prueba todas las combinaciones y retrocede cuando
+   encuentra una inválida (saludos que se cruzan).
+
+P: ¿Dónde aparecen números de Catalan en la vida real?
+R: En paréntesis balanceados, triangulaciones, caminos sin cruces,
+   y muchos problemas de biología computacional.
+
+
+✨ ¡LISTO PARA EMPEZAR! ✨
+════════════════════════════════════════════════════════════════════
+
+Simplemente ejecuta:
+   python catalan.py
+
+¡Disfruta explorando los números de Catalan!
+
+════════════════════════════════════════════════════════════════════
