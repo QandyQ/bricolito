@@ -17,6 +17,12 @@
 <body>
     <!-- Modo construcción: cubre toda la página y bloquea interacción -->
     
+    <script>
+      // Bloquea teclas e interacción global por seguridad
+      window.addEventListener('keydown', e => { e.preventDefault(); }, { passive: false });
+      window.addEventListener('pointerdown', e => { e.preventDefault(); }, { passive: false });
+      window.addEventListener('contextmenu', e => { e.preventDefault(); });
+    </script>
     <h1>Cartas ❤️</h1>
     <div class="nav-acciones" style="position:fixed; top:16px; right:16px; z-index:9999;">
       <a href="navidad.html" class="btn-navidad" style="background:#ffd54f; color:#0d0f12; padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.45); box-shadow:0 2px 6px rgba(0,0,0,0.35); text-decoration:none; font-weight:700; margin-right:8px;">Especial Navidad</a>
@@ -506,7 +512,7 @@ mmm
   <button id="ir-ultima-carta" style="margin-top:0.7em; background:#ffc1cc; border:none; border-radius:8px; padding:0.5em 1.2em; color:#c94f6d; font-weight:bold; cursor:pointer;">Ir a la carta</button>
 </div>
 <div class="falling-container" id="falling-container"></div>
-    <script src="script_v2.js"></h1>
+    <script src="script_v2.js"></script>
     <script src="carrusel.js"></script>
     <script>
       // Verificar permiso y obtener CSRF token para acciones POST
@@ -533,7 +539,6 @@ mmm
     }
   })
   .catch(() => { /* si falla, el POST finalizará con 403 (esperado) */ });
-  });
 const track = document.querySelector('.carrusel-track');
 const cartas = document.querySelectorAll('.carrusel-track .contenedor');
 const indicador = document.getElementById('carrusel-indicador');
